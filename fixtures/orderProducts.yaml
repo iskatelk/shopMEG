@@ -1,0 +1,34 @@
+App\Entity\OrderProducts:
+  products_1:
+    title: Mavic
+    price: 85.99 
+    seller: sdf
+    model: 1Gb
+    productId: 1
+    quantity: 2
+    orderNumber: 1
+  products_2:
+    title: Arctic
+    price: 125.99 
+    seller: sdf
+    model: 1Gb
+    productId: 2
+    quantity: 1
+    orderNumber: 1
+            
+  products_3:
+    title: Barand
+    price: 105.99 
+    seller: sdf
+    model: 2Gb
+    productId: 3
+    quantity: 1
+    orderNumber: 2
+  products_4:
+    title: Barand
+    price: 105.99 
+    seller: sdf
+    model: 2Gb
+    productId: 3
+    quantity: 1
+    orderNumber: 3

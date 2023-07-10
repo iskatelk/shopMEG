@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="Middle Middle_top">
+    <div class="Middle-top">
+        <div class="wrap">
+            <div class="Middle-header">
+                <h1 class="Middle-title">Корзина</h1>
+                <ul class="breadcrumbs Middle-breadcrumbs">
+                    <li class="breadcrumbs-item"><a href="{{ path('app_index') }}">Главная</a></li>
+                    <li class="breadcrumbs-item breadcrumbs-item_current"><span>Корзина</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="Section">
+        <div class="wrap">
+            <form class="form Cart" action="{{ path('app_cart_update') }}" method="post">
+                {% set i = 0 %}
+                {% for gid in gids %}
+                    {% if counts is not null %}
+                 {% if counts [i] > 0 %}
+
+                <div class="Cart-product">
+                    <div class="Cart-block Cart-block_row">
+                        <div class="Cart-block Cart-block_pict">
+                            <a class="Cart-pict" href="{{ path('app_product_show') }}?p={{ gid.0.productId }}"><img class="Cart-img" src="assets/img/content/home/card.jpg" alt="card.jpg"/></a>
+                        </div>
+                        <div class="Cart-block Cart-block_info"><a class="Cart-title" href="{{ path('app_product_show') }}?p={{ gid.0.productId }}">{{ gid.0.title }}</a>
+                            <div class="Cart-desc">Это супер ноутбук, 3 гб. 4 ядра   {{ gid.0.productId }}
+                            </div>
+                        </div>
+                        <div class="Cart-block Cart-block_price">
+                            <div class="Cart-price">{{ gid.0.price }}$
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="Cart-block Cart-block_row">
+                        <div class="Cart-block Cart-block_seller">
+                            <!-- - var options = setOptions(items, ['value', 'selected', 'disabled']);-->
+                            <select class="form-select">
+                                <option value="good" selected="selected">shop good
+                                </option>
+                                <option value="kke">shop kke
+                                </option>
+                                <option value="sssssl">market sssssl
+                                </option>
+                            </select>
+                        </div>
+                        <div class="Cart-block Cart-block_amount">
+                            <div class="Cart-amount">
+                                <div class="Amount">
+                                    <button class="Amount-remove" type="button">
+                                    </button>
+                                    <input class="Amount-input form-input" name="amount[{{gid.0.productId}}]" type="text" value="{{ counts [i] }}" />
+                                    <button class="Amount-add" type="button">
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="Cart-block Cart-block_delete">
+                            <a class="Cart-delete" href="{{ path('app_cart_delete') }}?d={{gid.0.productId}}"><img src="assets/img/icons/card/delete.svg" alt="delete.svg"/></a>
+                        </div>
+
+                    </div>
+                </div>
+                     {{ gid.0.price * counts[i] }}
+                    {% endif %}
+                    {% endif %}
+                    {% set i = i + 1 %}
+
+                {% endfor %}
+
+                <div class="Cart-total">
+                    <div class="Cart-block Cart-block_total">
+                        <strong class="Cart-title">Итого:
+                        </strong><span class="Cart-price">{{ total }}$</span><span class="Cart-price_old">250.99$</span>
+                    </div>
+                    <div class="Cart-block">
+                        <input  type="submit" class="btn btn_success btn_lg" id="clear" name="clear" value="Очистить">
+                    </div>
+                    <div class="Cart-block">
+                    <input  type="submit" class="btn btn_success btn_lg" id="update" name="update" value="Пересчитать">
+                </div>
+                    <div class="Cart-block">
+                        <a class="btn btn_success btn_lg" href="{{ path('app_catalog') }}">Продолжить покупки</a>
+                    </div>
+                    <div class="Cart-block"><a class="btn btn_success btn_lg" href="{{ path('app_order') }}">Оформить заказ</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

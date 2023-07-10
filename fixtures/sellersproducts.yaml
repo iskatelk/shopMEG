@@ -1,0 +1,11 @@
+App\Entity\SellersProducts:
+  sellers_1:
+    seller_id: 1
+    product_id: 1  
+    price: 85.99
+    shop_name: ssk    
+  sellers_2:
+    seller_id: 2
+    product_id: 1 
+    price: 93.99
+    shop_name: ssd

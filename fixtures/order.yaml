@@ -1,0 +1,28 @@
+App\Entity\Order:
+  order_1:
+    orderNumber: 1
+    totalPrice: 297.99 
+    typePayment: online
+    typeDelivery: ordinary
+    createdAt: <(new DateTimeImmutable('2023-07-02 15:10:10'))>
+    orderStatus: paymentOK
+    customerName: Александров Александр Александрович
+    email: alecsandrov@example.com
+  order_2:
+    orderNumber: 2
+    totalPrice: 105.99 
+    typePayment: someone
+    typeDelivery: ordinary
+    createdAt: <(new DateTimeImmutable('2023-07-03 15:10:10'))>
+    orderStatus: paymentErr
+    customerName: Александров Александр Александрович
+    email: alecsandrov@example.com   	
+  order_3:
+    orderNumber: 3
+    totalPrice: 105.99 
+    typePayment: someone
+    typeDelivery: ordinary
+    createdAt: <(new DateTimeImmutable('2023-07-04 15:10:10'))>
+    orderStatus: paymentOK
+    customerName: Степанов Степан Степанович
+    email: stepanov@example.com  

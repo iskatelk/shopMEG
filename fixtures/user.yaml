@@ -1,0 +1,27 @@
+App\Entity\User:
+  user_1:
+    email: admin@example.com
+    roles: '[ROLE_ADMIN]' 
+    password: 123456
+    customer: Петров Петр Петрович
+    city: Москва
+    address: ул.Пушкина, д.10, кв.82
+    phone: +79164613148	
+  user_2:
+    email: alecsandrov@example.com
+    roles: '[ROLE_USER]' 
+    password: 123456
+    customer: Александров Александр Александрович
+    city: Орел
+    address: ул. Мира, д.31, кв.48
+    phone: +79164624145        
+  user_3:
+    email: stepanov@example.com
+    roles: '[ROLE_USER]' 
+    password: 123456
+    customer: Степанов Степан Степанович
+    city: Саратов
+    address: ул.Ленина, д.8, кв.22
+    phone: +79164634555
+    
+  

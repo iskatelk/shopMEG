@@ -1,0 +1,47 @@
+App\Entity\Products:
+  product_1:
+    title: Mavic
+    price: 85.99 
+    seller: sdf
+    model: 1Gb
+    productId: 1
+  product_2:
+    title: Arctic
+    price: 125.99 
+    seller: sdf
+    model: 1Gb
+    productId: 2
+  product_3:
+    title: Barand
+    price: 105.99 
+    seller: sdf
+    model: 2Gb
+    productId: 3
+  product_4:
+    title: Corsair
+    price: 145.99 
+    seller: ssk
+    model: 4Gb
+    productId: 4
+  product_5:
+    title: NewCorsair
+    price: 205.99 
+    seller: ssk
+    model: 8Gb
+    productId: 5
+  product_6:
+    title: NewArctic
+    price: 225.99 
+    seller: ssk
+    model: 8Gb
+    productId: 6
+  product_7:
+    title: NewBarand
+    price: 185.99 
+    seller: ssk
+    model: 6Gb
+    productId: 7
+  
+  
+    
+  

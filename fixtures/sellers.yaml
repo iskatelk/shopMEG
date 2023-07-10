@@ -1,0 +1,14 @@
+App\Entity\Sellers:
+  seller_1:
+    name: ssk
+    description: <text()> 
+    phone: +79164635555
+    address: Москва, пр-кт Мира, д.101
+    email: sales@ssk-store.ru
+    
+  seller_2:
+    name: ssd
+    description: <text()> 
+    phone: +79238002222
+    address: Озул, ул.Ленина, д.10
+    email: sales@ssd-shop.ru
