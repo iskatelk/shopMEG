@@ -22,7 +22,7 @@ class Products
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
+    private $name;
 
     /**
      * @ORM\Column(type="float")
@@ -37,12 +37,7 @@ class Products
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $model;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $product_id;
+    private $description;
 
     /**
      * @ORM\ManyToMany(targetEntity=SellersProducts::class, mappedBy="Sellers")
@@ -59,14 +54,14 @@ class Products
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): self
+    public function setName(string $name): self
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
@@ -95,26 +90,14 @@ class Products
         return $this;
     }
 
-    public function getModel(): ?string
+    public function getDescription(): ?string
     {
-        return $this->model;
+        return $this->description;
     }
 
-    public function setModel(string $model): self
+    public function setDescription(string $description): self
     {
-        $this->model = $model;
-
-        return $this;
-    }
-
-    public function getProductId(): ?int
-    {
-        return $this->product_id;
-    }
-
-    public function setProductId(int $product_id): self
-    {
-        $this->product_id = $product_id;
+        $this->description = $description;
 
         return $this;
     }
