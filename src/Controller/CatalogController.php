@@ -3,9 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Products;
-use App\Repository\ProductsRepository;
-use App\Service\CatalogService;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Service\CatalogService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,40 +16,48 @@ class CatalogController extends AbstractController {
     /**
      * @Route("/catalog", name="app_catalog")
      */
-    public function show(Request $request, EntityManagerInterface $em,PaginatorInterface $paginator, ProductsRepository $repository, CatalogService $catalog)
+    public function show(EntityManagerInterface $entityManager, PaginatorInterface $paginator, CatalogService $catalog, Request $request): Response
     {
         
-		$comments = $catalog->comments($em);
-
-        $price = $request->query->get('price');
-        $price2 = explode(";",$price);
-        if(isset($price)) {
-            var_dump($price2);
-            $seller = $request->query->get('seller');
-            $title = $request->query->get('title');
-            $model = $request->query->get('model');
-            $comments = $catalog->comments2($repository,intval($price2[0]),intval($price2[1]),$seller,$title,$model);
+        $products = $entityManager->getRepository(Products::class)->findAll();
+        if (!$products) {
+            throw $this->createNotFoundException(
+            'No product found for id '
+            );
         }
-        $query = $request->query->get('qr');
-        if($query) {
-            $comments = $repository->searchByQuery($query);
-        }
-        $q = $request->query->get('q');
+        
+        
+		// $products = $catalog->products($em);
 
-        if ($q == 1) {
-            $comments = $catalog->comments3($repository);
+        // $price = $request->query->get('price');
+        // $price2 = explode(";",$price);
+        // if(isset($price)) {
+        //     var_dump($price2);
+        //     $seller = $request->query->get('seller');
+        //     $title = $request->query->get('title');
+        //     $model = $request->query->get('model');
+        //     $products = $catalog->products2($repository,intval($price2[0]),intval($price2[1]),$seller,$title,$model);
+        // }
+        // $query = $request->query->get('qr');
+        // if($query) {
+        //     $products = $repository->searchByQuery($query);
+        // }
+        // $q = $request->query->get('q');
 
-        }
+        // if ($q == 1) {
+        //     $products = $catalog->products3($repository);
+
+        // }
 
         $pagination = $paginator->paginate(
 
-        $comments ,
+        $products ,
         $request->query->getInt('page', 1),
-            3
+            6
         );
 
         return $this->render('catalog/catalog.html.twig', [
-            //'article' => ucwords(str_replace('-', ' ', $slug)),
+            'controller_name' => 'CatalogController',
             'pagination' => $pagination,
         ]);
     }

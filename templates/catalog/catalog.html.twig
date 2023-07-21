@@ -72,26 +72,26 @@
                 <div class="Sort">
                     <div class="Sort-title">Сортировать по:
                     </div>
-                    <div class="Sort-variants"><a class="Sort-sortBy Sort-sortBy_dec" href="{{ path('app_catalog') }}?q=2">Популярности</a><a class="Sort-sortBy" href="{{ path('app_catalog') }}?q=1">Цене</a><a class="Sort-sortBy" href="#">Отзывам</a><a class="Sort-sortBy Sort-sortBy_inc" href="#">Новизне</a>
+                    <div class="Sort-variants"><a class="Sort-sortBy Sort-sortBy_dec" href="{{ path('app_catalog') }}">Популярности</a><a class="Sort-sortBy" href="{{ path('app_catalog') }}?q=1">Цене</a><a class="Sort-sortBy" href="#">Отзывам</a><a class="Sort-sortBy Sort-sortBy_inc" href="#">Новизне</a>
                     </div>
                 </div>
                 <div class="Cards">
-                    {% for comment in pagination %}
-                    <div class="Card"><a class="Card-picture" href="{{ path('app_product_show') }}"><img src="../../assets/img/content/home/card.jpg" alt="card.jpg"/></a>
+                    {% for product in pagination %}
+                    <div class="Card"><a class="Card-picture" href="{{ path('product_show', {id: product.id}) }}"><img src="/assets/img/content/home/card.jpg" alt="card.jpg"/></a>
                         <div class="Card-content">
-                            <strong class="Card-title"><a href="{{ path('app_product_show') }}">{{ comment.title }}</a>
+                            <strong class="Card-title"><a href="{{ path('product_show', {id: product.id}) }}">{{ product.name }}</a>
                             </strong>
                             <div class="Card-description">
-                                <div class="Card-cost"><span class="Card-priceOld">$115.00</span><span class="Card-price">${{ comment.price }}</span>
+                                <div class="Card-cost"><span class="Card-priceOld">$115.00</span><span class="Card-price">${{ product.price }}</span>
                                 </div>
                                 <div class="Card-category">Games / xbox
                                 </div>
-                                <div class="Card-hover"><a class="Card-btn" href="{{ path('app_product_show') }}?p={{ comment.productId }}">
-                                        <img src="../../assets/img/icons/card/bookmark.svg" alt="bookmark.svg"/></a>
-                                    <a class="Card-btn" href="{{ path('app_cart_add') }}?p={{ comment.productId }}">
-                                        <img src="../../assets/img/icons/card/cart.svg" alt="cart.svg"/></a>
-                                    <a class="Card-btn" href="{{ path('app_compare') }}">
-                                        <img src="../../assets/img/icons/card/change.svg" alt="change.svg"/></a>
+                                <div class="Card-hover"><a class="Card-btn" href="{{ path('product_show', {id: product.id}) }}">
+                                        <img src="/assets/img/icons/card/bookmark.svg" alt="bookmark.svg"/></a>
+                                    <a class="Card-btn" href="{{ path('app_cart_add', {id: product.id}) }}">
+                                        <img src="/assets/img/icons/card/cart.svg" alt="cart.svg"/></a>
+                                    <a class="Card-btn" href="{{ path('app_compare', {id: product.id}) }}">
+                                        <img src="/assets/img/icons/card/change.svg" alt="change.svg"/></a>
                                 </div>
                             </div>
                         </div>

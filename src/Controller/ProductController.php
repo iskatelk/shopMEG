@@ -2,35 +2,50 @@
 
 namespace App\Controller;
 
-use App\Repository\ProductsRepository;
-use App\Repository\SellersProductsRepository;
-use App\Repository\SellersRepository;
+use App\Entity\Products;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/product", name="app_product_show")
+     * @Route("/product/{id}", name="product_show")
      */
-    public function show(Request $request, ProductsRepository $repository, SellersProductsRepository $sprepository, SellersRepository $srepository)
+
+    public function show(int $id, EntityManagerInterface $entityManager): Response
     {
-        $p = $request->query->get('p');
-       // dd($p);
-        $productDetails = $repository->findOneBy(array('product_id'=>$p));
-        $sellernames = $sprepository->findBy(array('product_id'=>$p));
-       // dd($sellers);
-      /*  $sellernames = [];
-        foreach($sellers as $seller) {
-            $sellernames[] = $srepository->find($seller->getSellerId());
-        }*/
-      //  dd($names);
+       $product = $entityManager->getRepository(Products::class)->find($id);
+	   if (!$product) {
+		   throw $this->createNotFoundException(
+		   'No product found for id '.$id
+		   );
+	   }
+	   
         return $this->render('product/product.html.twig', [
-           // 'controller_name', 'ProductController'
-            'productDetails' => $productDetails,
-            'sellernames' => $sellernames,
+			// 'controller_name' => 'ProductController',
+			'product' => $product,
         ]);
     }
+	
+	/**
+	* @Route("/product", name="create_product")
+	*/
+ 
+    public function createProduct(EntityManagerInterface $entityManager): Response
+    {
+        $product = new Product();
+        $product->setName('Keyboard');
+        $product->setPrice(1999);
+        $product->setDescription('Ergonomic and stylish!');
+
+        // tell Doctrine you want to (eventually) save the Product (no queries yet)
+        $entityManager->persist($product);
+
+        // actually executes the queries (i.e. the INSERT query)
+        $entityManager->flush();
+
+        return new Response('Saved new product with id '.$product->getId());
+    }	
 }
