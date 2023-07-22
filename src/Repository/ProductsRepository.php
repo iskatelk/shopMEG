@@ -24,7 +24,6 @@ class ProductsRepository extends ServiceEntityRepository
     public function save(Products $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
-
         if ($flush) {
             $this->getEntityManager()->flush();
         }
@@ -33,7 +32,6 @@ class ProductsRepository extends ServiceEntityRepository
     public function remove(Products $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
-
         if ($flush) {
             $this->getEntityManager()->flush();
         }
@@ -45,7 +43,6 @@ class ProductsRepository extends ServiceEntityRepository
             ->orderBy('a.price','DESC')
             ->getQuery()
             ->getResult();
-
     }
 
     public function findProductMix ($value1,$value2,$value3,$value4,$value5)
@@ -54,7 +51,7 @@ class ProductsRepository extends ServiceEntityRepository
             ->andWhere('a.price > :val1')
             ->andWhere('a.price < :val2')
             ->andWhere('a.seller = :val3')
-            ->andWhere('a.title = :val4')
+            ->andWhere('a.name = :val4')
             ->andWhere('a.model = :val5')
             ->setParameter('val1', $value1)
             ->setParameter('val2', $value2)
@@ -63,13 +60,12 @@ class ProductsRepository extends ServiceEntityRepository
             ->setParameter('val5', $value5)
             ->getQuery()
             ->getResult();
-
     }
 
     public function findSelectProduct ($value)
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.product_id = :val')
+            ->andWhere('a.id = :val')
             ->setParameter('val', $value)
             ->setMaxResults(1)
             ->getQuery()
@@ -81,7 +77,7 @@ class ProductsRepository extends ServiceEntityRepository
     public function getPriceItem($value) {
         return $this->createQueryBuilder('a')
             ->select('a.price')
-            ->andWhere('a.product_id = :val')
+            ->andWhere('a.id = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getResult();
@@ -90,7 +86,7 @@ class ProductsRepository extends ServiceEntityRepository
     public function searchByQuery(string $query)
     {
         return $this->createQueryBuilder('p')
-            ->where('p.title LIKE :query')
+            ->where('p.name LIKE :query')
             ->setParameter('query', '%'. $query. '%')
             ->getQuery()
             ->getResult();

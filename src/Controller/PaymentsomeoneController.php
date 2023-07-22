@@ -71,17 +71,17 @@ class PaymentsomeoneController extends AbstractController
             $this->session = new Session();
             if(!isset($this->session)) $this->session->start();
 
-            $this->goodsOrd = $this->session->get('goods');
-            $this->countsOrd = $this->session->get('counts');
+            $this->goodsOrd = $this->session->get('cart');
+          //  $this->countsOrd = $this->session->get('counts');
 
 
 
             if(isset($this->goodsOrd)) {
-                foreach ($this->goodsOrd as $key => $prd_id) {
+                foreach ($this->goodsOrd as $key => $cnt_id) {
 
-                    if ($prd_id > 0) {
+                    if ($cnt_id > 0) {
 
-                       foreach($repository->findSelectProduct(intval($prd_id)) as $product) {
+                       foreach($repository->findSelectProduct(intval($key)) as $product) {
 
                             $orderProducts = new OrderProducts();
                             $orderProducts
@@ -89,21 +89,22 @@ class PaymentsomeoneController extends AbstractController
                                 ->setTitle($product->getTitle())
                                 ->setSeller($product->getSeller())
                                 ->setModel($product->getModel())
-                                ->setQuantity($this->countsOrd[$key])
-                                ->setProductId($prd_id)
+                                ->setQuantity($cnt_id)
+                                ->setProductId($key)
                                 ->setOrderNumber($this->orderNumber);
 
                                  $em->persist($orderProducts);
                                  $em->flush();
 
                         }
-                        $prc = $repository->getPriceItem($prd_id);
-                        if(isset($this->countsOrd)) {
-                            $this->totalOrd += $prc[0]['price'] * $this->countsOrd[$key];
-                        }
+                       // $prc = $repository->getPriceItem($prd_id);
+                       // if(isset($this->countsOrd)) {
+
+                       // }
                     }
 
                 }
+                $this->totalOrd = $this->session->get('total');
             }
            // dd($_POST['pay']);
                         $created = new \DateTimeImmutable('now');

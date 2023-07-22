@@ -206,8 +206,8 @@
                                     <div class="Cart-block Cart-block_row">
                                         <div class="Cart-block Cart-block_pict"><a class="Cart-pict" href="#"><img class="Cart-img" src="assets/img/content/home/card.jpg" alt="card.jpg"/></a>
                                         </div>
-                                        <div class="Cart-block Cart-block_info"><a class="Cart-title" href="#">{{ gidOrd.0.title }}</a>
-                                            <div class="Cart-desc">Это супер ноутбук, 3 гб. 4 ядра {{ gidOrd.0.productId }}
+                                        <div class="Cart-block Cart-block_info"><a class="Cart-title" href="#">{{ gidOrd.0.name }}</a>
+                                            <div class="Cart-desc">Это супер ноутбук, 3 гб. 4 ядра {{ gidOrd.0.id }}
                                             </div>
                                         </div>
                                         <div class="Cart-block Cart-block_price">
@@ -249,15 +249,12 @@
                                                         if (radio.checked) {
                                                             if (radio.value === "online") {
                                                                forms.action ="{{ path('app_payment') }}";
-
                                                             } else {
                                                                 forms.action ="{{ path('app_paymentsomeone') }}";
-
                                                             }
                                                         }
                                                     }
                                                 });
-
                                             </script>
                                         {% endblock %}
                                     </div>

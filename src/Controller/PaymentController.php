@@ -30,19 +30,15 @@ class PaymentController extends AbstractController
 		$orderNmb = $request->query->get('order');
         $customer = $request->getSession()->get(
             Security::LAST_USERNAME
-        );
+            );
        
-		
-		if(isset($orderNmb)){ 
+		if(isset($orderNmb)){
 		 var_dump($orderNmb);
 		 $this->orderNumber = $orderNmb;
 		} else {
-
         $ord = $repository2->getMaxId();
         $this->orderNumber = intval($ord[0][1]) + 1;
-
             if(isset($customer)) {
-
                 $queryBuilder = $em->createQueryBuilder();
                 $query = $queryBuilder->update('App:User', 'u')
                     ->set('u.customer', ':userName')
@@ -57,59 +53,51 @@ class PaymentController extends AbstractController
                 $result = $query->execute();
             }
 
-        //  dd($this->orderNumber);
-        if(!isset($customer) && isset($_POST['name'])) {
+            //  dd($this->orderNumber);
+            if(!isset($customer) && isset($_POST['name'])) {
+                $newCustomer = new User();
+                $newCustomer
+                    ->setEmail($_POST['mail'])
+                    ->setPassword($_POST['passwordReply'])
+                    ->setCustomer($_POST['name'])
+                    ->setCity($_POST['city'])
+                    ->setAddress($_POST['address'])
+                    ->setPhone($_POST['phone']);
 
-            $newCustomer = new User();
-            $newCustomer
-                ->setEmail($_POST['mail'])
-                ->setPassword($_POST['passwordReply'])
-                ->setCustomer($_POST['name'])
-                ->setCity($_POST['city'])
-                ->setAddress($_POST['address'])
-                ->setPhone($_POST['phone']);
-
-            $em->persist($newCustomer);
-            $em->flush();
-        }
+                $em->persist($newCustomer);
+                $em->flush();
+            }
 
         if(isset($_POST['name'])){
             $this->session = new Session();
             if(!isset($this->session)) $this->session->start();
 
-            $this->goodsOrd = $this->session->get('goods');
-            $this->countsOrd = $this->session->get('counts');
-
-
+            $this->goodsOrd = $this->session->get('cart');
+           // $this->countsOrd = $this->session->get('counts');
 
             if(isset($this->goodsOrd)) {
-                foreach ($this->goodsOrd as $key => $prd_id) {
+                foreach ($this->goodsOrd as $key => $cnt_id) {
+                    if ($cnt_id > 0) {
+                       foreach($repository->findSelectProduct(intval($key)) as $product) {
+                           $orderProducts = new OrderProducts();
+                           $orderProducts
+                               ->setPrice($product->getPrice())
+                               ->setName($product->getName())
+                               ->setSeller($product->getSeller())
+                               ->setModel($product->getModel())
+                               ->setQuantity($cnt_id)
+                               ->setProductId($key)
+                               ->setOrderNumber($this->orderNumber);
 
-                    if ($prd_id > 0) {
-
-                           foreach($repository->findSelectProduct(intval($prd_id)) as $product) {
-
-                               $orderProducts = new OrderProducts();
-                               $orderProducts
-                                   ->setPrice($product->getPrice())
-                                   ->setTitle($product->getTitle())
-                                   ->setSeller($product->getSeller())
-                                   ->setModel($product->getModel())
-                                   ->setQuantity($this->countsOrd[$key])
-                                   ->setProductId($prd_id)
-                                   ->setOrderNumber($this->orderNumber);
-
-                                    $em->persist($orderProducts);
-                                    $em->flush();
-
+                                $em->persist($orderProducts);
+                                $em->flush();
                            }
-                        $prc = $repository->getPriceItem($prd_id);
-                        if(isset($this->countsOrd)) {
-                            $this->totalOrd += $prc[0]['price'] * $this->countsOrd[$key];
-                        }
+                       // $prc = $repository->getPriceItem($prd_id);
+                      //  if(isset($this->countsOrd)) {
+                      //  }
                     }
-
                 }
+                $this->totalOrd = $this->session->get('total');
             }
             // dd($_POST['pay']);
             $created = new \DateTimeImmutable('now');
@@ -123,14 +111,15 @@ class PaymentController extends AbstractController
                       ->setCustomerName($_POST['name'])
 					  ->setEmail($_POST['mail'])
                       ->setCreatedAt($created);
+
                   $em->persist($order);
                   $em->flush();
-        }
+            }
 		}
         return $this->render('payment/payment.html.twig', [
            // 'controller_name' => 'PaymentController',
             'orderNumber' => $this->orderNumber,
-            'totalOrd' => $this->totalOrd,
+            'totalOrd' => $this->session->get('total')
         ]);
     }
 }

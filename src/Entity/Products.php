@@ -62,7 +62,6 @@ class Products
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -74,7 +73,6 @@ class Products
     public function setPrice(float $price): self
     {
         $this->price = $price;
-
         return $this;
     }
 
@@ -86,7 +84,6 @@ class Products
     public function setSeller(string $seller): self
     {
         $this->seller = $seller;
-
         return $this;
     }
 
@@ -98,7 +95,6 @@ class Products
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -116,7 +112,6 @@ class Products
             $this->sellersProducts[] = $sellersProduct;
             $sellersProduct->addSeller($this);
         }
-
         return $this;
     }
 
@@ -125,7 +120,6 @@ class Products
         if ($this->sellersProducts->removeElement($sellersProduct)) {
             $sellersProduct->removeSeller($this);
         }
-
         return $this;
     }
 }
