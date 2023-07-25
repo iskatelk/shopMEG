@@ -5,16 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     {% block stylesheets %}
-    <link href="/favicon.ico" rel="shortcut icon">
-    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Regular.woff" as="font">
-    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Italic.woff" as="font">
-    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Bold.woff" as="font">
-    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Bold_Italic.woff" as="font">
-    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Light.woff" as="font">
-    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Light_Italic.woff" as="font">
-    <link rel="stylesheet" href="/assets/css/fonts.css?v=98987060">
-    <link rel="stylesheet" href="/assets/css/basic.css?v=98987060">
-    <link rel="stylesheet" href="/assets/css/extra.css?v=98987060">
+    <link href="{{ asset('/favicon.ico') }}" rel="shortcut icon">
+{#    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Regular.woff" as="font">#}
+{#    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Italic.woff" as="font">#}
+{#    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Bold.woff" as="font">#}
+{#    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Bold_Italic.woff" as="font">#}
+{#    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Light.woff" as="font">#}
+{#    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Light_Italic.woff" as="font">#}
+{#    <link rel="stylesheet" href="/assets/css/fonts.css?v=98987060">#}
+{#    <link rel="stylesheet" href="/assets/css/basic.css?v=98987060">#}
+{#    <link rel="stylesheet" href="/assets/css/extra.css?v=98987060">#}
+        {{ encore_entry_link_tags('app') }}
     {% endblock %}
 	<style>
         ul.pagination li {
@@ -164,7 +165,7 @@
             <div class="Header-search">
                 <div class="search">
                     <form class="form form_search" action="{{ path('app_catalog') }}" method="get">
-                        <input class="search-input" id="qr" name="qr" type="text" placeholder="Найти..."/>
+                        <label for="qr"></label><input class="search-input" id="qr" name="qr" type="text" placeholder="Найти...">
                         <button class="search-button" type="submit" name="search" id="search"><img src="/assets/img/icons/search.svg" alt="search.svg"/>Поиск</button>
                     </form>
                 </div>
@@ -226,85 +227,15 @@
 </footer>
 {% endblock %}
 
-{% block javascript %}
-<script>
-    const getButton = document.querySelector('[name="btn-check"]');
-    getButton.addEventListener('click', confirmOder);
-
-    function confirmOder() {
-        var fio = document.getElementById('name');
-        var el = document.getElementById('check-name');
-        if (typeof el.innerText !== 'undefined') {
-            // IE8-
-            el.innerText = fio.value;
-        } else {
-            // Нормальные браузеры
-            el.textContent = fio.value;
-        }
-
-        var city = document.getElementById('city');
-        var elcity = document.getElementById('check-city');
-        if (typeof elcity.innerText !== 'undefined') {
-            // IE8-
-            elcity.innerText = city.value;
-        } else {
-            // Нормальные браузеры
-            elcity.textContent = city.value;
-        }
-
-        var phone = document.getElementById('phone');
-        var elphone = document.getElementById('check-phone');
-        if (typeof elcity.innerText !== 'undefined') {
-            // IE8-
-            elphone.innerText = phone.value;
-        } else {
-            // Нормальные браузеры
-            elphone.textContent = phone.value;
-        }
-
-        var address = document.getElementById('address');
-        var eladdress = document.getElementById('check-address');
-        if (typeof elcity.innerText !== 'undefined') {
-            // IE8-
-            eladdress.innerText = address.value;
-        } else {
-            // Нормальные браузеры
-            eladdress.textContent = address.value;
-        }
-
-        var mail = document.getElementById('mail');
-        var elmail = document.getElementById('check-mail');
-        if (typeof elcity.innerText !== 'undefined') {
-            // IE8-
-            elmail.innerText = mail.value;
-        } else {
-            // Нормальные браузеры
-            elmail.textContent = mail.value;
-        }
-
-
-        if (document.order_form.delivery.value == 'ordinary') {
-            deliveryType = 'Обычная доставка';
-        } else {
-            deliveryType = 'Экспресс доставка ($500.00)';
-        }
-        document.getElementById('check-delivery').textContent = deliveryType;
-
-        if (document.order_form.pay.value == 'online') {
-            paymentType = 'Онлайн картой';
-        } else {
-            paymentType = 'Онлайн со случайного чужого счета';
-        }
-        document.getElementById('check-pay').textContent = paymentType;
-    }
-</script>
-
-<script src="/assets/plg/jQuery/jquery-3.5.0.slim.min.js"></script>
-<script src="/assets/plg/form/jquery.form.js"></script>
-<script src="/assets/plg/form/jquery.maskedinput.min.js"></script>
-<script src="/assets/plg/range/ion.rangeSlider.min.js"></script>
-<script src="/assets/plg/Slider/slick.min.js"></script>
-<script src="/assets/js/scripts.js"></script>
+{% block javascripts %}
+<script src="{{ asset('/assets/js/order.confirm.js') }}"></script>
+<script src="{{ asset('/assets/plg/jQuery/jquery-3.5.0.slim.min.js') }}"></script>
+<script src="{{ asset('/assets/plg/form/jquery.form.js') }}"></script>
+<script src="{{ asset('/assets/plg/form/jquery.maskedinput.min.js') }}"></script>
+<script src="{{ asset('/assets/plg/range/ion.rangeSlider.min.js') }}"></script>
+<script src="{{ asset('/assets/plg/Slider/slick.min.js') }}"></script>
+<script src="{{ asset('/assets/js/scripts.js') }}"></script>
+{{ encore_entry_script_tags('app') }}
 {% endblock %}
 </body>
 </html>

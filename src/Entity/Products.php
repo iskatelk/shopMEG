@@ -44,6 +44,12 @@ class Products
      */
     private $sellersProducts;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
+
     public function __construct()
     {
         $this->sellersProducts = new ArrayCollection();
@@ -120,6 +126,18 @@ class Products
         if ($this->sellersProducts->removeElement($sellersProduct)) {
             $sellersProduct->removeSeller($this);
         }
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
         return $this;
     }
 }

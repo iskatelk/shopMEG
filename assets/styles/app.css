@@ -1,0 +1,6 @@
+@import "../css/basic.css";
+@import "../css/extra.css";
+@import "../css/fonts.css";
+body {
+    background-color: white;
+}

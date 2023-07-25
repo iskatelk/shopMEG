@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Security\LoginFormAuthenticator;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,15 +45,16 @@ class SecurityController extends AbstractController
      * @Route("/register", name="app_register")
      */
     public function register(
-        Request                $request,
+        EntityManagerInterface $em,
+        Request $request
 //        UserPasswordEncoderInterface $passwordEncoder,
 //        GuardAuthenticatorHandler $guard,
-        LoginFormAuthenticator $authenticator
+//        LoginFormAuthenticator $authenticator
     )
     {
         if ($request->isMethod('POST')) {
-//            $user = new User();
-            $user = $authenticator->getLastUsername();
+            $user = new User();
+//            $user = $authenticator->getLastUsername();
 
             $user
                 ->setEmail($request->request->get('mail'))
@@ -62,7 +64,6 @@ class SecurityController extends AbstractController
                 ->setCity('city')
                 ->setAddress('address');
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 

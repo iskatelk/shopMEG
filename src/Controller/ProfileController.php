@@ -20,23 +20,23 @@ class ProfileController extends AbstractController
         $customer = $request->getSession()->get(
             Security::LAST_USERNAME
         );
-        if(!isset($success)) {
-            $success = null;
+        $repository = $em->getRepository(User::class);
+        $userDetails = $repository->findOneBy(['email'=>$customer]);
+        if (!isset($result)) {
+            $result = null;
         }
+        if ($request->isMethod('POST')) {
+            $userDetails
+                ->setEmail($request->request->get('mail'))
+                ->setPhone($request->request->get('phone'))
+                ->setPassword($request->request->get('password'))
+                ->setRoles(['ROLE_USER'])
+                ->setCustomer($request->request->get('name'))
+                ->setCity('city')
+                ->setAddress('address');
 
-        if(isset($_POST['name'])) {
-            $queryBuilder = $em->createQueryBuilder();
-            $query = $queryBuilder->update('App:User', 'u')
-                ->set('u.customer', ':userName')
-                ->set('u.phone', ':phone')
-                ->set('u.password', ':password')
-                ->where('u.email = :email')
-                ->setParameter('userName', $_POST['name'])
-                ->setParameter('phone', $_POST['phone'])
-                ->setParameter('password', $_POST['password'])
-                ->setParameter('email', $customer)
-                ->getQuery();
-            $success = $query->execute();
+            $em->flush();
+            $result = 'success';
         }
 
         $repository = $em->getRepository(User::class);
@@ -45,7 +45,7 @@ class ProfileController extends AbstractController
         return $this->render('profile/profile.html.twig', [
            // 'controller_name' => 'ProfileController',
             'userDetails' => $userDetails,
-            'success' => $success,
+            'success' => $result,
         ]);
     }
 }
