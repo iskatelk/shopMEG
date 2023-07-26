@@ -26,7 +26,7 @@ class PaymentsomeoneController extends AbstractController
     /**
      * @Route("/paymentsomeone", name="app_paymentsomeone")
      */
-    public function index(Request $request, EntityManagerInterface $em, ProductsRepository $repository, OrderRepository $repository2)
+    public function index(Request $request, EntityManagerInterface $em, ProductsRepository $repository, OrderRepository $repository2): Response
     {
         $customer = $request->getSession()->get(
             Security::LAST_USERNAME
@@ -36,8 +36,7 @@ class PaymentsomeoneController extends AbstractController
         $ord = $repository2->getMaxId();
         $this->orderNumber = intval($ord[0][1]) + 1;
 
-        if(isset($customer)) {
-
+        if (isset($customer)) {
             $queryBuilder = $em->createQueryBuilder();
             $query = $queryBuilder->update('App:User', 'u')
                 ->set('u.customer', ':userName')
@@ -51,9 +50,8 @@ class PaymentsomeoneController extends AbstractController
                 ->getQuery();
             $result = $query->execute();
         }
-      //  dd($this->orderNumber);
-        if(!isset($customer) && isset($_POST['name'])) {
-
+        //  dd($this->orderNumber);
+        if (!isset($customer) && isset($_POST['name'])) {
             $newCustomer = new User();
             $newCustomer
                 ->setEmail($_POST['mail'])
@@ -67,22 +65,19 @@ class PaymentsomeoneController extends AbstractController
             $em->flush();
         }
 
-        if(isset($_POST['name'])){
+        if (isset($_POST['name'])) {
             $this->session = new Session();
-            if(!isset($this->session)) $this->session->start();
+            if (!isset($this->session)) {
+                $this->session->start();
+            }
 
             $this->goodsOrd = $this->session->get('cart');
-          //  $this->countsOrd = $this->session->get('counts');
+            //  $this->countsOrd = $this->session->get('counts');
 
-
-
-            if(isset($this->goodsOrd)) {
+            if (isset($this->goodsOrd)) {
                 foreach ($this->goodsOrd as $key => $cnt_id) {
-
                     if ($cnt_id > 0) {
-
-                       foreach($repository->findSelectProduct(intval($key)) as $product) {
-
+                        foreach ($repository->findSelectProduct(intval($key)) as $product) {
                             $orderProducts = new OrderProducts();
                             $orderProducts
                                 ->setPrice($product->getPrice())
@@ -93,33 +88,31 @@ class PaymentsomeoneController extends AbstractController
                                 ->setProductId($key)
                                 ->setOrderNumber($this->orderNumber);
 
-                                 $em->persist($orderProducts);
-                                 $em->flush();
-
+                            $em->persist($orderProducts);
+                            $em->flush();
                         }
-                       // $prc = $repository->getPriceItem($prd_id);
-                       // if(isset($this->countsOrd)) {
+                        // $prc = $repository->getPriceItem($prd_id);
+                        // if(isset($this->countsOrd)) {
 
-                       // }
+                        // }
                     }
-
                 }
                 $this->totalOrd = $this->session->get('total');
             }
-           // dd($_POST['pay']);
-                        $created = new \DateTimeImmutable('now');
-                        $order = new Order();
-                         $order
-                             ->setOrderNumber($this->orderNumber)
-                             ->setTotalPrice($this->totalOrd)
-                             ->setTypePayment($_POST['pay'])
-                             ->setTypeDelivery($_POST['delivery'])
-                             ->setOrderStatus('waitpay')
-                             ->setCustomerName($_POST['name'])
-							 ->setEmail($_POST['mail'])
-                             ->setCreatedAt($created);
-                         $em->persist($order);
-                         $em->flush();
+            // dd($_POST['pay']);
+            $created = new \DateTimeImmutable('now');
+            $order = new Order();
+            $order
+                ->setOrderNumber($this->orderNumber)
+                ->setTotalPrice($this->totalOrd)
+                ->setTypePayment($_POST['pay'])
+                ->setTypeDelivery($_POST['delivery'])
+                ->setOrderStatus('waitpay')
+                ->setCustomerName($_POST['name'])
+                ->setEmail($_POST['mail'])
+                ->setCreatedAt($created);
+            $em->persist($order);
+            $em->flush();
         }
 
         return $this->render('paymentsomeone/paymentsomeone.html.twig', [

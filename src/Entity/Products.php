@@ -7,48 +7,35 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=ProductsRepository::class)
- */
+#[ORM\Entity(repositoryClass: ProductsRepository::class)]
 class Products
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $price;
+    #[ORM\Column]
+    private ?float $price = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $seller;
+    #[ORM\Column(length: 255)]
+    private ?string $seller = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $description;
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
 
     /**
      * @ORM\ManyToMany(targetEntity=SellersProducts::class, mappedBy="Sellers")
      */
-    private $sellersProducts;
+    #[ORM\ManyToMany(targetEntity: SellersProducts::class, mappedBy: 'Sellers')]
+    private Collection $sellersProducts;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="products")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $category;
+//    #[ORM\ManyToOne]
+//    #[ORM\JoinColumn(nullable: false)]
+//    private ?Category $category = null;
 
     public function __construct()
     {
@@ -65,9 +52,10 @@ class Products
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -76,9 +64,10 @@ class Products
         return $this->price;
     }
 
-    public function setPrice(float $price): self
+    public function setPrice(float $price): static
     {
         $this->price = $price;
+
         return $this;
     }
 
@@ -87,9 +76,10 @@ class Products
         return $this->seller;
     }
 
-    public function setSeller(string $seller): self
+    public function setSeller(string $seller): static
     {
         $this->seller = $seller;
+
         return $this;
     }
 
@@ -98,9 +88,10 @@ class Products
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $description): static
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -112,20 +103,22 @@ class Products
         return $this->sellersProducts;
     }
 
-    public function addSellersProduct(SellersProducts $sellersProduct): self
+    public function addSellersProduct(SellersProducts $sellersProduct): static
     {
         if (!$this->sellersProducts->contains($sellersProduct)) {
             $this->sellersProducts[] = $sellersProduct;
             $sellersProduct->addSeller($this);
         }
+
         return $this;
     }
 
-    public function removeSellersProduct(SellersProducts $sellersProduct): self
+    public function removeSellersProduct(SellersProducts $sellersProduct): static
     {
         if ($this->sellersProducts->removeElement($sellersProduct)) {
             $sellersProduct->removeSeller($this);
         }
+
         return $this;
     }
 
@@ -134,7 +127,7 @@ class Products
         return $this->category;
     }
 
-    public function setCategory(?Category $category): self
+    public function setCategory(?Category $category): static
     {
         $this->category = $category;
 

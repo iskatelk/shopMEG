@@ -5,47 +5,32 @@ namespace App\Entity;
 use App\Repository\SellersRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=SellersRepository::class)
- */
+
+#[ORM\Entity(repositoryClass: SellersRepository::class)]
 class Sellers
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $description;
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $site;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $site;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $phone;
+    #[ORM\Column(length: 255)]
+    private ?string $phone = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $address;
+    #[ORM\Column(length: 255)]
+    private ?string $address = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $email;
+    #[ORM\Column(length: 255)]
+    private ?string $email = null;
 
     public function getId(): ?int
     {
@@ -57,7 +42,7 @@ class Sellers
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -69,7 +54,7 @@ class Sellers
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription(string $description): static
     {
         $this->description = $description;
 
@@ -81,7 +66,7 @@ class Sellers
         return $this->site;
     }
 
-    public function setSite(?string $site): self
+    public function setSite(?string $site): static
     {
         $this->site = $site;
 
@@ -93,7 +78,7 @@ class Sellers
         return $this->phone;
     }
 
-    public function setPhone(string $phone): self
+    public function setPhone(string $phone): static
     {
         $this->phone = $phone;
 
@@ -105,7 +90,7 @@ class Sellers
         return $this->address;
     }
 
-    public function setAddress(string $address): self
+    public function setAddress(string $address): static
     {
         $this->address = $address;
 
@@ -117,7 +102,7 @@ class Sellers
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 

@@ -23,8 +23,8 @@ final class Version20230722144806 extends AbstractMigration
         $this->addSql('ALTER TABLE category ADD parent_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE category ADD CONSTRAINT FK_64C19C1727ACA70 FOREIGN KEY (parent_id) REFERENCES category (id)');
         $this->addSql('CREATE INDEX IDX_64C19C1727ACA70 ON category (parent_id)');
-//        $this->addSql('ALTER TABLE products ADD CONSTRAINT FK_B3BA5A5A12469DE2 FOREIGN KEY (category_id) REFERENCES category (id)');
-//        $this->addSql('CREATE INDEX IDX_B3BA5A5A12469DE2 ON products (category_id)');
+        //        $this->addSql('ALTER TABLE products ADD CONSTRAINT FK_B3BA5A5A12469DE2 FOREIGN KEY (category_id) REFERENCES category (id)');
+        //        $this->addSql('CREATE INDEX IDX_B3BA5A5A12469DE2 ON products (category_id)');
     }
 
     public function down(Schema $schema): void

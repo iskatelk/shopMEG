@@ -6,15 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     {% block stylesheets %}
     <link href="{{ asset('/favicon.ico') }}" rel="shortcut icon">
-{#    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Regular.woff" as="font">#}
-{#    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Italic.woff" as="font">#}
-{#    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Bold.woff" as="font">#}
-{#    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Bold_Italic.woff" as="font">#}
-{#    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Light.woff" as="font">#}
-{#    <link rel="preload" href="/assets/fonts/Roboto/Roboto-Light_Italic.woff" as="font">#}
-{#    <link rel="stylesheet" href="/assets/css/fonts.css?v=98987060">#}
-{#    <link rel="stylesheet" href="/assets/css/basic.css?v=98987060">#}
-{#    <link rel="stylesheet" href="/assets/css/extra.css?v=98987060">#}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
 	<style>
@@ -28,9 +19,9 @@
 <body class="Site">
 {% block header %}
 <header class="Header">
-    <div class="ControlPanel">
-        <div class="wrap">
-            <div class="row ControlPanel-row">
+    <nav class="ControlPanel">
+        <nav class="wrap">
+            <nav class="row ControlPanel-row">
                 <div class="row-block">
                     <div class="row ControlPanel-rowSplit">
                         <div class="row-block"><a class="ControlPanel-title" href="{{ path('app_sale') }}">Скидки</a>
@@ -44,17 +35,22 @@
                         </div>
                     </div>
                 </div>
-                <nav class="row-block">
+                <div class="row-block">
                     <div class="row ControlPanel-rowSplit">
-                        <div class="row-block">
-                            <a class="ControlPanel-title" href="{% if app.session.get('customer') is null %}{{ path('app_login') }}{% else %}{{ path('app_account') }}{% endif %}">{% if app.session.get('customer') is null %}{{ 'Войти' }}{% else %}{{ 'Личный кабинет' }}{% endif %}</a>/&nbsp;<a class="ControlPanel-title" href="{% if app.session.get('customer') is null %}{{ path('app_register') }}{% else %}{{ path('app_logout') }}{% endif %}">{% if app.session.get('customer') is null %}{{ 'Регистрация' }}{% else %}{{ 'Выйти' }}{% endif %}</a>
+                        <div class="row-block hide_700">
+                            <ul class="menu ControlPanel-menu" id="login">
+                                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                    <li class="menu-item"><a class="ControlPanel-title" href="{{ path('app_profile') }}">{{ 'Профиль' }}</a>&nbsp;/ <a class="ControlPanel-title" href="{{ path('app_logout') }}">{{ 'Выйти' }}</a></li>
+                                {% else %}
+                                    <li class="menu-item"><a class="ControlPanel-title" href="{{ path('app_login') }}">{{ 'Войти' }}</a>&nbsp;/ <a class="ControlPanel-title" href="{{ path('app_register') }}">{{ 'Регистрация' }}</a></li>
+                                {% endif %}
+                            </ul>                      
                         </div>
                     </div>
-                </nav>
-            </div>
-        </div>
+                </div>
+            </nav>
+        </nav>
 
-    </div>
     <div class="wrap">
         <div class="row Header-rowMain">
             <div class="row-block Header-logo"><a class="logo" href="{{ path('app_index') }}"><img class="logo-image" src="/assets/img/logo.png" alt="logo.png"/></a>

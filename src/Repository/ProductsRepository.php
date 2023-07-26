@@ -37,15 +37,15 @@ class ProductsRepository extends ServiceEntityRepository
         }
     }
 
-    public function findProductPrice ()
+    public function findProductPrice()
     {
         return $this->createQueryBuilder('a')
-            ->orderBy('a.price','DESC')
+            ->orderBy('a.price', 'DESC')
             ->getQuery()
             ->getResult();
     }
 
-    public function findProductMix ($value1,$value2,$value3,$value4,$value5)
+    public function findProductMix($value1, $value2, $value3, $value4, $value5)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.price > :val1')
@@ -62,7 +62,7 @@ class ProductsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findSelectProduct ($value)
+    public function findSelectProduct($value)
     {
         return $this->createQueryBuilder('a')
             ->andWhere('a.id = :val')
@@ -70,11 +70,10 @@ class ProductsRepository extends ServiceEntityRepository
             ->setMaxResults(1)
             ->getQuery()
             ->getResult();
-
     }
 
-
-    public function getPriceItem($value) {
+    public function getPriceItem($value)
+    {
         return $this->createQueryBuilder('a')
             ->select('a.price')
             ->andWhere('a.id = :val')
@@ -87,32 +86,32 @@ class ProductsRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->where('p.name LIKE :query')
-            ->setParameter('query', '%'. $query. '%')
+            ->setParameter('query', '%'.$query.'%')
             ->getQuery()
             ->getResult();
     }
-//    /**
-//     * @return Products[] Returns an array of Products objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Products[] Returns an array of Products objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('p.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Products
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Products
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

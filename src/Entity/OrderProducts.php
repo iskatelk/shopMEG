@@ -5,52 +5,34 @@ namespace App\Entity;
 use App\Repository\OrderProductsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=OrderProductsRepository::class)
- */
+#[ORM\Entity(repositoryClass: OrderProductsRepository::class)]
 class OrderProducts
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $price;
+    #[ORM\Column]
+    private ?float $price = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $quantity;
+    #[ORM\Column]
+    private ?int $quantity = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $orderNumber;
+    #[ORM\Column]
+    private ?int $orderNumber = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $seller;
+    #[ORM\Column(length: 255)]
+    private ?string $seller = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $model;
+    #[ORM\Column(length: 255)]
+    private ?string $model = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $product_id;
+    #[ORM\Column]
+    private ?int $product_id = null;
 
     public function getId(): ?int
     {
@@ -62,7 +44,7 @@ class OrderProducts
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(string $title): static
     {
         $this->title = $title;
 
@@ -74,7 +56,7 @@ class OrderProducts
         return $this->price;
     }
 
-    public function setPrice(float $price): self
+    public function setPrice(float $price): static
     {
         $this->price = $price;
 
@@ -86,7 +68,7 @@ class OrderProducts
         return $this->quantity;
     }
 
-    public function setQuantity(int $quantity): self
+    public function setQuantity(int $quantity): static
     {
         $this->quantity = $quantity;
 
@@ -98,7 +80,7 @@ class OrderProducts
         return $this->orderNumber;
     }
 
-    public function setOrderNumber(int $orderNumber): self
+    public function setOrderNumber(int $orderNumber): static
     {
         $this->orderNumber = $orderNumber;
 
@@ -110,7 +92,7 @@ class OrderProducts
         return $this->seller;
     }
 
-    public function setSeller(string $seller): self
+    public function setSeller(string $seller): static
     {
         $this->seller = $seller;
 
@@ -122,7 +104,7 @@ class OrderProducts
         return $this->model;
     }
 
-    public function setModel(string $model): self
+    public function setModel(string $model): static
     {
         $this->model = $model;
 
@@ -134,7 +116,7 @@ class OrderProducts
         return $this->product_id;
     }
 
-    public function setProductId(int $product_id): self
+    public function setProductId(int $product_id): static
     {
         $this->product_id = $product_id;
 

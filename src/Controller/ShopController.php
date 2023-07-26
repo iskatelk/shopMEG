@@ -13,14 +13,14 @@ class ShopController extends AbstractController
     /**
      * @Route("/shop", name="app_shop")
      */
-    public function shop(Request $request, SellersRepository $repository):Response
+    public function shop(Request $request, SellersRepository $repository): Response
     {
         $id = $request->query->get('id');
-        //$id = 1;
+        // $id = 1;
         $seller = $repository->find($id);
 
         return $this->render('shop/shop.html.twig', [
-            //'controller_name', 'ShopController',
+            // 'controller_name', 'ShopController',
             'seller' => $seller,
         ]);
     }

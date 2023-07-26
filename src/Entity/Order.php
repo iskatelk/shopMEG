@@ -3,60 +3,44 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=OrderRepository::class)
- * @ORM\Table(name="`order`")
- */
+#[ORM\Entity(repositoryClass: OrderRepository::class)]
 class Order
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $orderNumber;
+    #[ORM\Column]
+    private ?int $orderNumber = null;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $totalPrice;
+    #[ORM\Column]
+    private ?float $totalPrice = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $typePayment;
+    #[ORM\Column(length: 255)]
+    private ?string $typePayment = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $typeDelivery;
+    #[ORM\Column(length: 255)]
+    private ?string $typeDelivery = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     */
-    private $createdAt;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $orderStatus;
+    #[ORM\Column(length: 255)]
+    private ?string $orderStatus = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $customerName;
+    #[ORM\Column(length: 255)]
+    private ?string $customerName = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $email;
+    #[ORM\Column(length: 255)]
+    private ?string $email = null;
+
+    #[ORM\ManyToOne(inversedBy: 'ordersRef')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -80,7 +64,7 @@ class Order
         return $this->totalPrice;
     }
 
-    public function setTotalPrice(float $totalPrice): self
+    public function setTotalPrice(float $totalPrice): static
     {
         $this->totalPrice = $totalPrice;
 
@@ -92,7 +76,7 @@ class Order
         return $this->typePayment;
     }
 
-    public function setTypePayment(string $typePayment): self
+    public function setTypePayment(string $typePayment): static
     {
         $this->typePayment = $typePayment;
 
@@ -104,7 +88,7 @@ class Order
         return $this->typeDelivery;
     }
 
-    public function setTypeDelivery(string $typeDelivery): self
+    public function setTypeDelivery(string $typeDelivery): static
     {
         $this->typeDelivery = $typeDelivery;
 
@@ -116,7 +100,7 @@ class Order
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
 
@@ -128,7 +112,7 @@ class Order
         return $this->orderStatus;
     }
 
-    public function setOrderStatus(string $orderStatus): self
+    public function setOrderStatus(string $orderStatus): static
     {
         $this->orderStatus = $orderStatus;
 
@@ -140,7 +124,7 @@ class Order
         return $this->customerName;
     }
 
-    public function setCustomerName(string $customerName): self
+    public function setCustomerName(string $customerName): static
     {
         $this->customerName = $customerName;
 
@@ -152,9 +136,21 @@ class Order
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

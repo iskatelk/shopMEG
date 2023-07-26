@@ -3,57 +3,50 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- */
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 180, unique: true)]
+    private ?string $email = null;
+
+    #[ORM\Column]
+    private array $roles = [];
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @var string|null The hashed password
      */
-    private $email;
+    #[ORM\Column]
+    private ?string $password = null;
 
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
+    #[ORM\Column(length: 255)]
+    private ?string $customer = null;
 
-    /**
-     * @var string The hashed password
-     * @ORM\Column(type="string")
-     */
-    private $password;
+    #[ORM\Column(length: 255)]
+    private ?string $city;
 
+    #[ORM\Column(length: 255)]
+    private ?string $address;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $customer;
+    #[ORM\Column(length: 255)]
+    private ?string $phone;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $city;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class, orphanRemoval: true)]
+    private Collection $ordersRef;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $address;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $phone;
+    public function __construct()
+    {
+        $this->ordersRef = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -65,7 +58,7 @@ class User implements UserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 
@@ -102,14 +95,14 @@ class User implements UserInterface
     }
 
     /**
-     * @see UserInterface
+     * @see PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): static
     {
         $this->password = $password;
 
@@ -141,7 +134,7 @@ class User implements UserInterface
         return $this->customer;
     }
 
-    public function setCustomer(string $customer): self
+    public function setCustomer(string $customer): static
     {
         $this->customer = $customer;
 
@@ -153,7 +146,7 @@ class User implements UserInterface
         return $this->city;
     }
 
-    public function setCity(string $city): self
+    public function setCity(string $city): static
     {
         $this->city = $city;
 
@@ -165,7 +158,7 @@ class User implements UserInterface
         return $this->address;
     }
 
-    public function setAddress(string $address): self
+    public function setAddress(string $address): static
     {
         $this->address = $address;
 
@@ -177,9 +170,39 @@ class User implements UserInterface
         return $this->phone;
     }
 
-    public function setPhone(string $phone): self
+    public function setPhone(string $phone): static
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrdersRef(): Collection
+    {
+        return $this->ordersRef;
+    }
+
+    public function addOrdersRef(Order $ordersRef): static
+    {
+        if (!$this->ordersRef->contains($ordersRef)) {
+            $this->ordersRef->add($ordersRef);
+            $ordersRef->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdersRef(Order $ordersRef): static
+    {
+        if ($this->ordersRef->removeElement($ordersRef)) {
+            // set the owning side to null (unless already changed)
+            if ($ordersRef->getUser() === $this) {
+                $ordersRef->setUser(null);
+            }
+        }
 
         return $this;
     }

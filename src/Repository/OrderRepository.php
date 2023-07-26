@@ -35,9 +35,7 @@ class OrderRepository extends ServiceEntityRepository
         }
     }
 
-
-
-        /**
+    /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
@@ -51,14 +49,12 @@ class OrderRepository extends ServiceEntityRepository
 
     public function getMaxId()
     {
-       return $this->createQueryBuilder('u')
-            ->select('MAX(u.id)')
+        return $this->createQueryBuilder('u')
+             ->select('MAX(u.id)')
 
-            ->getQuery()
-            ->getResult();
+             ->getQuery()
+             ->getResult();
     }
-
-
 
     // /**
     //  * @return Order[] Returns an array of Order objects

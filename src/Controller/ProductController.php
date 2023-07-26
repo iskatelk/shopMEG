@@ -13,29 +13,25 @@ class ProductController extends AbstractController
     /**
      * @Route("/product/{id}", name="product_show")
      */
-
     public function show(int $id, EntityManagerInterface $entityManager): Response
     {
-       $product = $entityManager->getRepository(Products::class)->find($id);
-	   if (!$product) {
-		   throw $this->createNotFoundException(
-		   'No product found for id '.$id
-		   );
-	   }
-	   
+        $product = $entityManager->getRepository(Products::class)->find($id);
+        if (!$product) {
+            throw $this->createNotFoundException('No product found for id '.$id);
+        }
+
         return $this->render('product/product.html.twig', [
-			// 'controller_name' => 'ProductController',
-			'product' => $product,
+            // 'controller_name' => 'ProductController',
+            'product' => $product,
         ]);
     }
-	
-	/**
-	* @Route("/product", name="create_product")
-	*/
- 
+
+    /**
+     * @Route("/product", name="create_product")
+     */
     public function createProduct(EntityManagerInterface $entityManager): Response
     {
-        $product = new Product();
+        $product = new Products();
         $product->setName('Keyboard');
         $product->setPrice(1999);
         $product->setDescription('Ergonomic and stylish!');
@@ -47,5 +43,5 @@ class ProductController extends AbstractController
         $entityManager->flush();
 
         return new Response('Saved new product with id '.$product->getId());
-    }	
+    }
 }
