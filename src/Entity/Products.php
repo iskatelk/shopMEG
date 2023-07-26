@@ -33,6 +33,9 @@ class Products
     #[ORM\ManyToMany(targetEntity: SellersProducts::class, mappedBy: 'Sellers')]
     private Collection $sellersProducts;
 
+    #[ORM\OneToMany(mappedBy: 'products', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
+
 //    #[ORM\ManyToOne]
 //    #[ORM\JoinColumn(nullable: false)]
 //    private ?Category $category = null;
@@ -40,6 +43,7 @@ class Products
     public function __construct()
     {
         $this->sellersProducts = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,6 +134,36 @@ class Products
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setProducts($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getProducts() === $this) {
+                $comment->setProducts(null);
+            }
+        }
 
         return $this;
     }
