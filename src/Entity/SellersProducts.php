@@ -7,47 +7,31 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=SellersProductsRepository::class)
- */
+#[ORM\Entity(repositoryClass: SellersProductsRepository::class)]
 class SellersProducts
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $seller_id;
+    #[ORM\Column]
+    private ?int $seller_id = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $product_id;
+    #[ORM\Column]
+    private ?int $product_id = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Products::class, inversedBy="sellersProducts")
-     */
-    private $Sellers;
+    #[ORM\ManyToMany(targetEntity: Products::class, mappedBy: 'sellersProducts')]
+    private Collection $Sellers;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $price;
+    #[ORM\Column]
+    private ?float $price = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $sold;
+    #[ORM\Column (nullable: true)]
+    private ?int $sold;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $shop_name;
+    #[ORM\Column(length: 255)]
+    private ?string $shop_name = null;
 
     public function __construct()
     {
@@ -64,7 +48,7 @@ class SellersProducts
         return $this->seller_id;
     }
 
-    public function setSellerId(int $seller_id): self
+    public function setSellerId(int $seller_id): static
     {
         $this->seller_id = $seller_id;
 
@@ -76,7 +60,7 @@ class SellersProducts
         return $this->product_id;
     }
 
-    public function setProductId(int $product_id): self
+    public function setProductId(int $product_id): static
     {
         $this->product_id = $product_id;
 
@@ -91,7 +75,7 @@ class SellersProducts
         return $this->Sellers;
     }
 
-    public function addSeller(Products $seller): self
+    public function addSeller(Products $seller): static
     {
         if (!$this->Sellers->contains($seller)) {
             $this->Sellers[] = $seller;
@@ -100,7 +84,7 @@ class SellersProducts
         return $this;
     }
 
-    public function removeSeller(Products $seller): self
+    public function removeSeller(Products $seller): static
     {
         $this->Sellers->removeElement($seller);
 
@@ -112,7 +96,7 @@ class SellersProducts
         return $this->price;
     }
 
-    public function setPrice(float $price): self
+    public function setPrice(float $price): static
     {
         $this->price = $price;
 
@@ -124,7 +108,7 @@ class SellersProducts
         return $this->sold;
     }
 
-    public function setSold(?int $sold): self
+    public function setSold(?int $sold): static
     {
         $this->sold = $sold;
 
@@ -136,7 +120,7 @@ class SellersProducts
         return $this->shop_name;
     }
 
-    public function setShopName(string $shop_name): self
+    public function setShopName(string $shop_name): static
     {
         $this->shop_name = $shop_name;
 

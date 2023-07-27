@@ -7,32 +7,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=CategoryRepository::class)
- */
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Products::class, mappedBy="category")
-     */
-    private $products;
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Products::class)]
+    private Collection $products;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Category::class)
-     */
-    private $parent;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $parent = null;
 
     public function __construct()
     {
@@ -49,7 +40,7 @@ class Category
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): static
     {
         $this->name = $name;
 
@@ -64,7 +55,7 @@ class Category
         return $this->products;
     }
 
-    public function addProduct(Products $product): self
+    public function addProduct(Products $product): static
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
@@ -74,7 +65,7 @@ class Category
         return $this;
     }
 
-    public function removeProduct(Products $product): self
+    public function removeProduct(Products $product): static
     {
         if ($this->products->removeElement($product)) {
             // set the owning side to null (unless already changed)
@@ -86,12 +77,12 @@ class Category
         return $this;
     }
 
-    public function getParent(): ?self
+    public function getParent(): ?static
     {
         return $this->parent;
     }
 
-    public function setParent(?self $parent): self
+    public function setParent(?self $parent): static
     {
         $this->parent = $parent;
 

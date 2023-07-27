@@ -64,7 +64,8 @@
               <a class="Tabs-link_ACTIVE Tabs-link" href="#description"><span>Описание</span></a>
               <a class="Tabs-link" href="#sellers"><span>Продавцы</span></a>
               <a class="Tabs-link" href="#addit"><span>Характеристики</span></a>
-              <a class="Tabs-link" href="#reviews"><span>Отзывы (3)</span></a>
+              <a class="Tabs-link" href="#reviews"><span>Отзывы ( {{ comments | length }} )</span></a>
+              <a class="Tabs-link" href="#askme"><span>Вопросы ( {{ questions | length }} )</span></a>
             </div>
             <div class="Tabs-wrap">
               <div class="Tabs-block" id="description">
@@ -148,8 +149,10 @@
                   </div>
                 </div>
               </div>
+              <span class="Account">{{ error }}</span>
               <div class="Tabs-block" id="reviews">
                 <div class="Comments">
+                  {% for comment in comments %}
                   <div class="Comment">
                     <div class="Comment-column Comment-column_pict">
                       <div class="Comment-avatar">
@@ -158,14 +161,15 @@
                     <div class="Comment-column">
                       <header class="Comment-header">
                         <div>
-                          <strong class="Comment-title">Alexandra Brownie
-                          </strong><span class="Comment-date">22:50 - 25 Декабря 2020</span>
+                          <strong class="Comment-title">{{ comment.name }}
+                          </strong><span class="Comment-date">{{ comment.createdAt | format_datetime(locale='ru') }} | 22:50 - 25 Декабря 2020</span>
                         </div>
                       </header>
-                      <div class="Comment-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit doli. Aenean commodo ligula eget dolor. Aenean massa. Cumtipsu sociis natoque penatibus et magnis dis parturient montesti, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eutu, pretiumem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justotuio, rhoncus ut loret, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus element semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae.
+                      <div class="Comment-content">{{ comment.review }}
                       </div>
                     </div>
                   </div>
+                  {% endfor %}
                 </div>
                 <header class="Section-header Section-header_product">
                   <h3 class="Section-title">Оставить отзыв</h3>
@@ -187,6 +191,51 @@
                     </div>
                     <div class="form-group">
                       <button class="btn btn_muted" type="submit">Оставить отзыв</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="Tabs-block" id="askme">
+                {% for question in questions %}
+                  <div class="Comments">
+                    <div class="Comment">
+                      <div class="Comment-column Comment-column_pict">
+                        <div class="Comment-avatar">
+                        </div>
+                      </div>
+                      <div class="Comment-column">
+                        <header class="Comment-header">
+                          <div>
+                            <strong class="Comment-title">{{ question.author }}
+                            </strong><span class="Comment-date">{{ question.createdAt | format_datetime(locale='ru') }} | 22:50 - 25 Декабря 2020</span>
+                          </div>
+                        </header>
+                        <div class="Comment-content">{{ question.content }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+                <header class="Section-header Section-header_product">
+                  <h3 class="Section-title">Задать вопрос</h3>
+                </header>
+                <div class="Tabs-addComment">
+                  <form class="form" action="#" name="question" id="question" method="post">
+                    <div class="form-group">
+                      <textarea class="form-textarea" name="post" id="post" placeholder="Ваш вопрос..."></textarea>
+                    </div>
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="row-block">
+                          <input class="form-input" id="author" name="author" type="text" placeholder="Ваше Имя"/>
+                        </div>
+                        <div class="row-block">
+                          <input class="form-input" id="mail" name="mail" type="text" placeholder="Ваш Email"/>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <button class="btn btn_muted" type="submit">Задать вопрос</button>
                     </div>
                   </form>
                 </div>

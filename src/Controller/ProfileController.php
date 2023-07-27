@@ -15,13 +15,13 @@ class ProfileController extends AbstractController
     /**
      * @Route("/profile", name="app_profile")
      */
-    public function index(Request $request, EntityManagerInterface $em)
+    public function index(Request $request, EntityManagerInterface $em): Response
     {
         $customer = $request->getSession()->get(
             Security::LAST_USERNAME
         );
         $repository = $em->getRepository(User::class);
-        $userDetails = $repository->findOneBy(['email'=>$customer]);
+        $userDetails = $repository->findOneBy(['email' => $customer]);
         if (!isset($result)) {
             $result = null;
         }
@@ -40,7 +40,7 @@ class ProfileController extends AbstractController
         }
 
         $repository = $em->getRepository(User::class);
-        $userDetails = $repository->findOneBy(array('email'=>$customer));
+        $userDetails = $repository->findOneBy(['email' => $customer]);
 
         return $this->render('profile/profile.html.twig', [
            // 'controller_name' => 'ProfileController',

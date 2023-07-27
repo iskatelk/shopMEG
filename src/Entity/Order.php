@@ -3,84 +3,58 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass=OrderRepository::class)
- * @ORM\Table(name="`order`")
- */
+#[ORM\Entity(repositoryClass: OrderRepository::class)]
 class Order
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $orderNumber;
+    #[ORM\Column]
+    private ?float $totalPrice = null;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $totalPrice;
+    #[ORM\Column(length: 255)]
+    private ?string $typePayment = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $typePayment;
+    #[ORM\Column(length: 255)]
+    private ?string $typeDelivery = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $typeDelivery;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable")
-     */
-    private $createdAt;
+    #[ORM\Column(length: 255)]
+    private ?string $orderStatus = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $orderStatus;
+    #[ORM\ManyToOne(inversedBy: 'ordersRef')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $customerName;
+    #[ORM\OneToMany(mappedBy: 'orderRef', targetEntity: OrderProducts::class, orphanRemoval: true)]
+    private Collection $orderProducts;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $email;
+    public function __construct()
+    {
+        $this->orderProducts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getOrderNumber(): ?int
-    {
-        return $this->orderNumber;
-    }
-
-    public function setOrderNumber(int $orderNumber): self
-    {
-        $this->orderNumber = $orderNumber;
-
-        return $this;
-    }
 
     public function getTotalPrice(): ?float
     {
         return $this->totalPrice;
     }
 
-    public function setTotalPrice(float $totalPrice): self
+    public function setTotalPrice(float $totalPrice): static
     {
         $this->totalPrice = $totalPrice;
 
@@ -92,7 +66,7 @@ class Order
         return $this->typePayment;
     }
 
-    public function setTypePayment(string $typePayment): self
+    public function setTypePayment(string $typePayment): static
     {
         $this->typePayment = $typePayment;
 
@@ -104,7 +78,7 @@ class Order
         return $this->typeDelivery;
     }
 
-    public function setTypeDelivery(string $typeDelivery): self
+    public function setTypeDelivery(string $typeDelivery): static
     {
         $this->typeDelivery = $typeDelivery;
 
@@ -116,7 +90,7 @@ class Order
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): self
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
 
@@ -128,33 +102,51 @@ class Order
         return $this->orderStatus;
     }
 
-    public function setOrderStatus(string $orderStatus): self
+    public function setOrderStatus(string $orderStatus): static
     {
         $this->orderStatus = $orderStatus;
 
         return $this;
     }
 
-    public function getCustomerName(): ?string
+    public function getUser(): ?User
     {
-        return $this->customerName;
+        return $this->user;
     }
 
-    public function setCustomerName(string $customerName): self
+    public function setUser(?User $user): static
     {
-        $this->customerName = $customerName;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getEmail(): ?string
+    /**
+     * @return Collection<int, OrderProducts>
+     */
+    public function getOrderProducts(): Collection
     {
-        return $this->email;
+        return $this->orderProducts;
     }
 
-    public function setEmail(string $email): self
+    public function addOrderProduct(OrderProducts $orderProduct): static
     {
-        $this->email = $email;
+        if (!$this->orderProducts->contains($orderProduct)) {
+            $this->orderProducts->add($orderProduct);
+            $orderProduct->setOrderRef($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderProduct(OrderProducts $orderProduct): static
+    {
+        if ($this->orderProducts->removeElement($orderProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($orderProduct->getOrderRef() === $this) {
+                $orderProduct->setOrderRef(null);
+            }
+        }
 
         return $this;
     }

@@ -3,31 +3,27 @@
 namespace App\Controller;
 
 use App\Entity\Products;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Service\CatalogService;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class CatalogController extends AbstractController {
-
+class CatalogController extends AbstractController
+{
     /**
      * @Route("/catalog", name="app_catalog")
      */
     public function show(EntityManagerInterface $entityManager, PaginatorInterface $paginator, CatalogService $catalog, Request $request): Response
     {
-        
         $products = $entityManager->getRepository(Products::class)->findAll();
         if (!$products) {
-            throw $this->createNotFoundException(
-            'No product found for id '
-            );
+            throw $this->createNotFoundException('No product found for id ');
         }
-        
-        
-		// $products = $catalog->products($em);
+
+        // $products = $catalog->products($em);
 
         // $price = $request->query->get('price');
         // $price2 = explode(";",$price);
@@ -50,9 +46,8 @@ class CatalogController extends AbstractController {
         // }
 
         $pagination = $paginator->paginate(
-
-        $products ,
-        $request->query->getInt('page', 1),
+            $products,
+            $request->query->getInt('page', 1),
             6
         );
 
@@ -61,5 +56,4 @@ class CatalogController extends AbstractController {
             'pagination' => $pagination,
         ]);
     }
-
 }

@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Security\LoginFormAuthenticator;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,19 +46,19 @@ class SecurityController extends AbstractController
     public function register(
         EntityManagerInterface $em,
         Request $request
-//        UserPasswordEncoderInterface $passwordEncoder,
-//        GuardAuthenticatorHandler $guard,
-//        LoginFormAuthenticator $authenticator
-    )
-    {
+        //        UserPasswordEncoderInterface $passwordEncoder,
+        //        GuardAuthenticatorHandler $guard,
+        //        LoginFormAuthenticator $authenticator
+    ) {
         if ($request->isMethod('POST')) {
             $user = new User();
-//            $user = $authenticator->getLastUsername();
+            //            $user = $authenticator->getLastUsername();
 
             $user
                 ->setEmail($request->request->get('mail'))
                 ->setPhone($request->request->get('phone'))
                 ->setPassword($request->request->get('password'))
+                ->setRoles(['ROLE_USER'])
                 ->setCustomer('name')
                 ->setCity('city')
                 ->setAddress('address');
@@ -69,7 +68,7 @@ class SecurityController extends AbstractController
 
             return $this->redirectToRoute('app_account');
         }
+
         return $this->render('security/register.html.twig');
     }
-
 }
