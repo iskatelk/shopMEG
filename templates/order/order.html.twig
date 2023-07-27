@@ -8,7 +8,7 @@
                 <h1 class="Middle-title">Оформление заказа
                 </h1>
                 <ul class="breadcrumbs Middle-breadcrumbs">
-                    <li class="breadcrumbs-item"><a href="index.html">Главная</a>
+                    <li class="breadcrumbs-item"><a href="{{ path('app_index') }}">Главная</a>
                     </li>
                     <li class="breadcrumbs-item breadcrumbs-item_current"><span>Оформление заказа</span>
                     </li>
@@ -239,24 +239,6 @@
                                         <a class="btn btn_success Order-next" href="#step3">Назад</a>
                                         <button class="btn btn_primary btn_lg" type="submit" name="btn">Оплатить
                                         </button>
-                                        {% block javascripts %}
-                                            <script>
-                                                let radios = document.querySelectorAll('input[name="pay"]');
-                                                let button = document.querySelector('[name="btn"]');
-                                                let forms = document.querySelector('[name="order_form"]');
-                                                button.addEventListener('click', function() {
-                                                    for (let radio of radios) {
-                                                        if (radio.checked) {
-                                                            if (radio.value === "online") {
-                                                               forms.action ="{{ path('app_payment') }}";
-                                                            } else {
-                                                                forms.action ="{{ path('app_paymentsomeone') }}";
-                                                            }
-                                                        }
-                                                    }
-                                                });
-                                            </script>
-                                        {% endblock %}
                                     </div>
                                 </div>
                             </div>
@@ -268,4 +250,22 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        let radios = document.querySelectorAll('input[name="pay"]');
+        let button = document.querySelector('[name="btn"]');
+        let forms = document.querySelector('[name="order_form"]');
+        button.addEventListener('click', function() {
+            for (let radio of radios) {
+                if (radio.checked) {
+                    if (radio.value === "online") {
+                        forms.action ="{{ path('app_payment') }}";
+                    } else {
+                        forms.action ="{{ path('app_paymentsomeone') }}";
+                    }
+                }
+            }
+        });
+    </script>
 {% endblock %}

@@ -33,8 +33,14 @@ class Products
     #[ORM\ManyToMany(targetEntity: SellersProducts::class, mappedBy: 'Sellers')]
     private Collection $sellersProducts;
 
-    #[ORM\OneToMany(mappedBy: 'products', targetEntity: Comment::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'products', targetEntity: Comment::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $comments;
+
+    #[ORM\ManyToMany(targetEntity: Category::class)]
+    private Collection $categories;
+
+    #[ORM\OneToMany(mappedBy: 'products', targetEntity: Question::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $questions;
 
 //    #[ORM\ManyToOne]
 //    #[ORM\JoinColumn(nullable: false)]
@@ -44,6 +50,8 @@ class Products
     {
         $this->sellersProducts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+        $this->questions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -162,6 +170,60 @@ class Products
             // set the owning side to null (unless already changed)
             if ($comment->getProducts() === $this) {
                 $comment->setProducts(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Category>
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): static
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): static
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Question>
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): static
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions->add($question);
+            $question->setProducts($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): static
+    {
+        if ($this->questions->removeElement($question)) {
+            // set the owning side to null (unless already changed)
+            if ($question->getProducts() === $this) {
+                $question->setProducts(null);
             }
         }
 

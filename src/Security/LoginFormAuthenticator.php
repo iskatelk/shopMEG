@@ -95,7 +95,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         return $credentials['password'] == $user->getPassword();
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): RedirectResponse
     {
         //  return new RedirectResponse($this->urlGenerator->generate('app_homepage'));
         $session = new Session();

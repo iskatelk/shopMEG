@@ -22,9 +22,6 @@ class OrderProducts
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\Column]
-    private ?int $orderNumber = null;
-
     #[ORM\Column(length: 255)]
     private ?string $seller = null;
 
@@ -79,17 +76,6 @@ class OrderProducts
         return $this;
     }
 
-    public function getOrderNumber(): ?int
-    {
-        return $this->orderNumber;
-    }
-
-    public function setOrderNumber(int $orderNumber): static
-    {
-        $this->orderNumber = $orderNumber;
-
-        return $this;
-    }
 
     public function getSeller(): ?string
     {

@@ -7,6 +7,7 @@ use App\Repository\ProductsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
@@ -20,12 +21,12 @@ class OrderController extends AbstractController
     /**
      * @Route("/order", name="app_order")
      */
-    public function index(Request $request, EntityManagerInterface $em, ProductsRepository $repository2): \Symfony\Component\HttpFoundation\Response
+    public function index(Request $request, EntityManagerInterface $em, ProductsRepository $repository2): Response
     {
         $customer = $request->getSession()->get(
             Security::LAST_USERNAME
         );
-        var_dump($customer);
+        dump($customer);
         $request->getSession()->set('orderConfirm', true);
         $repository = $em->getRepository(User::class);
         $orderDetails = $repository->findOneBy(['email' => $customer]);

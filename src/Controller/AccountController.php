@@ -30,8 +30,8 @@ class AccountController extends AbstractController
 
         $repository = $em->getRepository(Order::class);
         $orderDetails = $repository->findOneBy(
-            ['email' => $customer],
-            ['orderNumber' => 'DESC']
+            ['user' => $customer],
+            ['id' => 'DESC']
         );
         // dd($orderDetails);
         return $this->render('account/account.html.twig', [

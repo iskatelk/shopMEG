@@ -17,9 +17,6 @@ class Order
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?int $orderNumber = null;
-
-    #[ORM\Column]
     private ?float $totalPrice = null;
 
     #[ORM\Column(length: 255)]
@@ -33,12 +30,6 @@ class Order
 
     #[ORM\Column(length: 255)]
     private ?string $orderStatus = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $customerName = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $email = null;
 
     #[ORM\ManyToOne(inversedBy: 'ordersRef')]
     #[ORM\JoinColumn(nullable: false)]
@@ -57,17 +48,6 @@ class Order
         return $this->id;
     }
 
-    public function getOrderNumber(): ?int
-    {
-        return $this->orderNumber;
-    }
-
-    public function setOrderNumber(int $orderNumber): self
-    {
-        $this->orderNumber = $orderNumber;
-
-        return $this;
-    }
 
     public function getTotalPrice(): ?float
     {
@@ -125,30 +105,6 @@ class Order
     public function setOrderStatus(string $orderStatus): static
     {
         $this->orderStatus = $orderStatus;
-
-        return $this;
-    }
-
-    public function getCustomerName(): ?string
-    {
-        return $this->customerName;
-    }
-
-    public function setCustomerName(string $customerName): static
-    {
-        $this->customerName = $customerName;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): static
-    {
-        $this->email = $email;
 
         return $this;
     }
