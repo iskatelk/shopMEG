@@ -6,18 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     {% block stylesheets %}
     <link href="{{ asset('favicon.ico') }}" rel="shortcut icon">
+
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
 	<style>
+
         ul.pagination li {
-            display: inline; 
-            padding: 10px; 
+            display: inline; /* Отображать как строчный элемент */
+            /*padding: 10px 10px;*/
+            /*margin-right: 5px; !* Отступ слева *!*/
+            /*border: 3px solid #6883c7; !* Рамка вокруг текста *!*/
+            padding: 10px; /* Поля вокруг текста */
             font-size: 15pt;
         }
+
     </style>
 </head>
 <body class="Site">
-{% block header %}
+
 <header class="Header">
     <nav class="ControlPanel">
         <nav class="wrap">
@@ -168,11 +174,11 @@
         </div>
     </div>
 </header>
-{% endblock %}
+
 
 {% block body %}{% endblock %}
 
-{% block footer %}
+
 <footer class="Footer">
     <div class="wrap">
         <div class="row Footer-main">
@@ -220,9 +226,9 @@
         </div>
     </div>
 </footer>
-{% endblock %}
 
-{% block javascripts %}
+
+
 <script src="{{ asset('/assets/js/order.confirm.js') }}"></script>
 <script src="{{ asset('/assets/plg/jQuery/jquery-3.5.0.slim.min.js') }}"></script>
 <script src="{{ asset('/assets/plg/form/jquery.form.js') }}"></script>
@@ -231,6 +237,6 @@
 <script src="{{ asset('/assets/plg/Slider/slick.min.js') }}"></script>
 <script src="{{ asset('/assets/js/scripts.js') }}"></script>
 {{ encore_entry_script_tags('app') }}
-{% endblock %}
+
 </body>
 </html>
