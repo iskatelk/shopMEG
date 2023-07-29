@@ -77,7 +77,7 @@
                 </div>
                 <div class="Cards">
                     {% for product in pagination %}
-                    <div class="Card"><a class="Card-picture" href="{{ path('product_show', {id: product.id}) }}"><img src="/assets/img/content/home/card.jpg" alt="card.jpg"/></a>
+                    <div class="Card"><a class="Card-picture" href="{{ path('product_show', {id: product.id}) }}"><img src="{{ asset('assets/img/content/home/card.jpg') }}" alt="card.jpg"/></a>
                         <div class="Card-content">
                             <strong class="Card-title"><a href="{{ path('product_show', {id: product.id}) }}">{{ product.name }}</a>
                             </strong>
@@ -87,30 +87,30 @@
                                 <div class="Card-category">Games / xbox
                                 </div>
                                 <div class="Card-hover"><a class="Card-btn" href="{{ path('product_show', {id: product.id}) }}">
-                                        <img src="/assets/img/icons/card/bookmark.svg" alt="bookmark.svg"/></a>
+                                        <img src="{{ asset('assets/img/icons/card/bookmark.svg') }}" alt="bookmark.svg"/></a>
                                     <a class="Card-btn" href="{{ path('app_cart_add', {id: product.id}) }}">
-                                        <img src="/assets/img/icons/card/cart.svg" alt="cart.svg"/></a>
+                                        <img src="{{ asset('assets/img/icons/card/cart.svg') }}" alt="cart.svg"/></a>
                                     <a class="Card-btn" href="{{ path('app_compare', {id: product.id}) }}">
-                                        <img src="/assets/img/icons/card/change.svg" alt="change.svg"/></a>
+                                        <img src="{{ asset('assets/img/icons/card/change.svg') }}" alt="change.svg"/></a>
                                 </div>
                             </div>
                         </div>
-                        <div class="Card-sale">-60%
+                        <div class="Card-sale">{{ sale }}
                         </div>
                     </div>
                     {% endfor %}
-
                 </div>
-
+                <div class="Pagination">
+                    <div class="Pagination-ins">
+                        {{ knp_pagination_render(pagination, null, {}, {
+                                'align': 'center',
+                                'size': 'middle',
+                                'rounded': true,
+                    }) }}
+                </div>
             </div>
         </div>
     </div>
 </div>
-<div style="align-self: center;">
-{{ knp_pagination_render(pagination, null, {}, {
-        'align': 'center',
-        'size': 'large',
-        'rounded': true,
-}) }}
 </div>
 {% endblock %}

@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Оформление заказа{% endblock %}
 {% block body %}
 <div class="Middle Middle_top">
     <div class="Middle-top">
@@ -252,6 +252,7 @@
 </div>
 {% endblock %}
 {% block javascripts %}
+    {{ parent() }}
     <script>
         let radios = document.querySelectorAll('input[name="pay"]');
         let button = document.querySelector('[name="btn"]');
