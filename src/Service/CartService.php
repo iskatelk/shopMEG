@@ -16,14 +16,14 @@ class CartService
         $this->session = $session;
     }
 
-    public function add($id)
+    public function add($id,$quantity)
     {
         $cart = $this->session->get('cart', []);
-        if (!empty($cart[$id])) {
-            ++$cart[$id];
-        } else {
+      //  if (!empty($cart[$id])) {
+            $cart[$id]=$quantity;
+       /* } /*else {
             $cart[$id] = 1;
-        }
+        }*/
         $this->session->set('cart', $cart);
     }
 
@@ -82,6 +82,7 @@ class CartService
                 $cartComplete[] = [
                     'product' => $product_object,
                     'quantity' => $quantity,
+                    'subTotal' => $quantity * $product_object->getPrice(),
                 ];
             }
         }

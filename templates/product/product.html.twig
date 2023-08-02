@@ -47,15 +47,19 @@
                 </ul>
               </div>
               <div class="ProductCard-cart">
-                <div class="ProductCard-cartElement ProductCard-cartElement_amount">
-                  <div class="Amount Amount_product">
-                    <button class="Amount-remove" type="button"></button>
-                    <input class="Amount-input form-input" name="amount" type="text" value="1"/>
-                    <button class="Amount-add" type="button"></button>
+                <form style="display: flex; justify-content: space-evenly; width: 100%;" action="{{ path('app_cart', {id: product.id}) }}#" method="post">
+                  <div class="ProductCard-cartElement ProductCard-cartElement_amount">
+                    <div class="Amount Amount_product">
+                      <button class="Amount-remove" type="button"></button>
+                      <input class="Amount-input form-input" name="amount" type="text" value="1"/>
+                      <button class="Amount-add" type="button"></button>
+                    </div>
                   </div>
-                </div>
-                <div class="ProductCard-cartElement"><a class="btn btn_primary" href="{{ path('app_cart_add', {id: product.id}) }}"><img class="btn-icon" src="/assets/img/icons/card/cart_white.svg" alt="cart_white.svg"/><span class="btn-content">Купить</span></a>
-                </div>
+                  <div class="ProductCard-cartElement">
+                    <button type="submit" class="btn btn_primary"><img class="btn-icon" src="/assets/img/icons/card/cart_white.svg" alt="cart_white.svg"/><span class="btn-content">Купить</span></button>
+{#                    <a class="btn btn_primary" href="{{ path('app_cart_add', {id: product.id}) }}"><img class="btn-icon" src="/assets/img/icons/card/cart_white.svg" alt="cart_white.svg"/><span class="btn-content">Купить</span></a>#}
+                  </div>
+                </form>
               </div>
             </div>
           </div>
@@ -149,9 +153,9 @@
                   </div>
                 </div>
               </div>
-              <span class="Account">{{ error }}</span>
               <div class="Tabs-block" id="reviews">
                 <div class="Comments">
+                  <span class="Comment-header">{{ error }}</span>
                   {% for comment in comments %}
                   <div class="Comment">
                     <div class="Comment-column Comment-column_pict">

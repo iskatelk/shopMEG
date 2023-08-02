@@ -16,16 +16,16 @@
     <div class="Section">
         <div class="wrap">
             <form class="form Cart" action="#" method="post">
-			{% set cnt = 0 %}
+ 			{% set cnt = 0 %}
 			    {% for good in goods %}
-				
+
                 <div class="Cart-product">
                     <div class="Cart-block Cart-block_row">
                         <div class="Cart-block Cart-block_pict">
-                            <a class="Cart-pict" href="#"><img class="Cart-img" src="assets/img/content/home/card.jpg" alt="card.jpg"/></a>
+                            <a class="Cart-pict" href="{{ path('product_show', {id: good.product.id}) }}"><img class="Cart-img" src="{{ asset('assets/img/content/home/card.jpg') }}" alt="card.jpg"/></a>
                         </div>
-                        <div class="Cart-block Cart-block_info"><a class="Cart-title" href="#">{{ good.product.name }}</a>
-                            <div class="Cart-desc">Это супер ноутбук, 3 гб. 4 ядра   {{ good.product.id }}
+                        <div class="Cart-block Cart-block_info"><a class="Cart-title" href="{{ path('product_show', {id: good.product.id}) }}">{{ good.product.name }}</a>
+                            <div class="Cart-desc">{{ good.product.description }}
                             </div>
                         </div>
                         <div class="Cart-block Cart-block_price">
@@ -50,41 +50,41 @@
                             <div class="Cart-amount">
                                 <div class="Amount">
                                     <div class="Cart-block">
-                        <a  class="btn btn_success btn_lg" href="{{ path('decrease_to_cart',{id:good.product.id}) }}">-</a>
-                    </div>
+                                        <a  class="btn btn_success btn_md" href="{{ path('decrease_to_cart',{id:good.product.id}) }}">-</a>
+                                    </div>
                                     <input class="Amount-input form-input" name="amount" type="text" value="{{ good.quantity }}" />
                                     <div class="Cart-block">
-                        <a  class="btn btn_success btn_lg" href="{{ path('increase_to_cart',{id:good.product.id}) }}">+</a>
-                    </div>
-
+                                        <a  class="btn btn_success btn_md" href="{{ path('increase_to_cart',{id:good.product.id}) }}">+</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
                         <div class="Cart-block Cart-block_delete">
-                            <a class="Cart-delete" href="{{ path('app_cart_delete', {id: good.product.id}) }}"><img src="assets/img/icons/card/delete.svg" alt="delete.svg"/></a>
+                            <a class="Cart-delete" href="{{ path('app_cart_delete', {id: good.product.id}) }}"><img src="{{ asset('assets/img/icons/card/delete.svg') }}" alt="delete.svg"/></a>
                         </div>
 
                     </div>
-                </div>
-                     {% set cnt = good.product.price * good.quantity + cnt %}
-                      {{ app.session.set('total', cnt) }}
+
+{#                     {% set cnt = good.product.price * good.quantity + cnt %}#}
+{#                      {{ app.session.set('total', cnt) }}#}
                 {% endfor %}
 
                 <div class="Cart-total">
                     <div class="Cart-block Cart-block_total">
                         <strong class="Cart-title">Итого:
-                        </strong><span class="Cart-price">{{ cnt }}$</span><span class="Cart-price_old">250.99$</span>
+                        </strong><span class="Cart-price">{{ total }}{# {{ cnt }} #}$</span><span class="Cart-price_old">250.99$</span>
                     </div>
                     <div class="Cart-block">
-                        <a class="btn btn_success btn_lg" href="{{ path('remove_to_cart') }}">Очистить</a>
+                        <a class="btn btn_success btn_md" href="{{ path('remove_to_cart') }}">Очистить</a>
                     </div>
                     <div class="Cart-block">
-                    <input  type="submit" class="btn btn_success btn_lg" id="update" name="update" value="Пересчитать">
+                    <input  type="submit" class="btn btn_success btn_md" id="update" name="update" value="Пересчитать">
                 </div>
                     <div class="Cart-block">
-                        <a class="btn btn_success btn_lg" href="{{ path('app_catalog') }}">Продолжить покупки</a>
+                        <a class="btn btn_success btn_md" href="{{ path('app_catalog') }}">Продолжить покупки</a>
                     </div>
-                    <div class="Cart-block"><a class="btn btn_success btn_lg" href="{{ path('app_order') }}">Оформить заказ</a>
+                    <div class="Cart-block"><a class="btn btn_success btn_md" href="{{ path('app_order') }}">Оформить заказ</a>
                     </div>
                 </div>
             </form>

@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Service\CartService;
+use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
@@ -18,12 +20,30 @@ class CartController extends AbstractController
     /**
      * @Route("/cart", name = "app_cart")
      */
-    public function index(CartService $cart): \Symfony\Component\HttpFoundation\Response
+    public function index(Request $request, CartService $cart): Response
     {
+        $goods = $cart->getFull();
+        $total = 0;
+        foreach ($goods as $good) {
+            $total += $good['subTotal'];
+        }
+        if ($request->isMethod('POST')
+            && $request->request->get('amount')
+        ){
+            $quantity = $request->request->get('amount');
+           // dd($quantity);
+            $id=$request->query->get('id');
+            $cart->add($id,$quantity);
+        } else {
+            $quantity= 1;
+            $id=$request->query->get('id');
+            $cart->add($id,$quantity);
+        }
         // dd($cart->getFull());
         return $this->render('cart/cart.html.twig', [
             // 'goods' => $cart->getFull(),
-            'goods' => $cart->getFull(),
+            'goods' => $goods,
+            'total' => $total,
         ]);
     }
 
