@@ -56,11 +56,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function supports(Request $request)
     {
+//        dd('Hello from Authentication');
         return $request->attributes->get('_route') === 'app_login' && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
     {
+       // dd($request->request->all());
         $credentials = [
             'email' => $request->request->get('email'),
             'password' => $request->request->get('password'),
@@ -92,23 +94,26 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function checkCredentials($credentials, UserInterface $user)
     {
         // return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+      //  dd($credentials,$user);
         return $credentials['password'] == $user->getPassword();
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): RedirectResponse
     {
         //  return new RedirectResponse($this->urlGenerator->generate('app_homepage'));
-        $session = new Session();
-        $orderConfirm = $session->get('orderConfirm');
+       // dd('Avtorizacia');
+//        $session = new Session();
+       // $orderConfirm = $session->get('orderConfirm');
         $customer = $request->getSession()->get(
             Security::LAST_USERNAME
         );
         if ($customer == 'admin@example.com') {
+
             return new RedirectResponse('/admin');
-        } elseif (isset($orderConfirm)) {
-            return new RedirectResponse('/order');
+        //} elseif (isset($orderConfirm)) {
+        //    return new RedirectResponse('/order');
         } else {
-            return new RedirectResponse('/account');
+            return new RedirectResponse('/profile');
         }
     }
 }

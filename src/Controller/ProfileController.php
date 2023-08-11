@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Security;
 class ProfileController extends AbstractController
 {
     /**
-     * @Route("/profile", name="app_profile")
+     * @Route("/profile1", name="app_profile1")
      */
     public function index(Request $request, EntityManagerInterface $em): Response
     {

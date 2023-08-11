@@ -29,15 +29,18 @@
                 </div>
                 <div class="row-block">
                     <div class="row ControlPanel-rowSplit">
-                        <div class="row-block hide_700">
-                            <ul class="menu ControlPanel-menu" id="login">
-                                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                                    <li class="menu-item"><a class="ControlPanel-title" href="{{ path('app_profile') }}">{{ 'Профиль' }}</a>&nbsp;/ <a class="ControlPanel-title" href="{{ path('app_logout') }}">{{ 'Выйти' }}</a></li>
-                                {% else %}
-                                    <li class="menu-item"><a class="ControlPanel-title" href="{{ path('app_login') }}">{{ 'Войти' }}</a>&nbsp;/ <a class="ControlPanel-title" href="{{ path('app_register') }}">{{ 'Регистрация' }}</a></li>
-                                {% endif %}
-                            </ul>
+                                  {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        <div class="row-block">
+                            {% if is_granted('ROLE_ADMIN') %}
+                            <a class="ControlPanel-title" href="{{ path('admin') }}">Администрирование</a>&nbsp;/&nbsp;
+                            {% endif %}
+                            <a class="ControlPanel-title" href="{{ path('app_account') }}">Кабинет</a>&nbsp;/&nbsp;<a class="ControlPanel-title" href="{{ path('app_logout') }}">Выйти</a>
                         </div>
+                        {% else %}
+                         <div class="row-block">
+                             <a class="ControlPanel-title" href="{{ path('app_login') }}">Войти</a>&nbsp;/&nbsp;<a class="ControlPanel-title" href="{{ path('app_register') }}">Регистрация</a>
+                         </div>
+                        {% endif %}
                     </div>
                 </div>
             </nav>
@@ -58,8 +61,10 @@
                 </div>
             </nav>
             <div class="row-block">
-                <div class="CartBlock"><a class="CartBlock-block" href="{{ path('app_compare') }}"><img class="CartBlock-img" src="{{ asset('assets/img/icons/exchange.svg') }}" alt="exchange.svg"/><span class="CartBlock-amount">4</span></a><a class="CartBlock-block" href="{{ path('app_cart') }}"><img class="CartBlock-img" src="{{ asset('assets/img/icons/cart.svg') }}" alt="cart.svg"/><span class="CartBlock-amount">{% if app.session.get('counts') is not null %}{{ app.session.get('totalcnt') }}{% else %}{{ 0 }}{% endif %}</span></a>
-                    <div class="CartBlock-block"><span class="CartBlock-price">{% if app.session.get('counts') is null %}{{ 0.00 }}{% else %}{{ app.session.get('total') }}{%  endif %}$</span>
+                <div class="CartBlock">
+                    <a class="CartBlock-block" href="{{ path('app_compare') }}"><img class="CartBlock-img" src="{{ asset('assets/img/icons/exchange.svg') }}" alt="exchange.svg"/><span class="CartBlock-amount">4</span></a>
+                    <a class="CartBlock-block" href="{{ path('app_cart') }}"><img class="CartBlock-img" src="{{ asset('assets/img/icons/cart.svg') }}" alt="cart.svg"/><span class="CartBlock-amount">{{ app.session.get('items') }}</span></a>
+                    <div class="CartBlock-block"><span class="CartBlock-price">{{ app.session.get('total') }}&nbsp;$</span>
                     </div>
                 </div>
             </div>

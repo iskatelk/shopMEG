@@ -21,36 +21,40 @@ class OrderController extends AbstractController
     /**
      * @Route("/order", name="app_order")
      */
-    public function index(Request $request, EntityManagerInterface $em, ProductsRepository $repository2): Response
+    public function index(Request $request, EntityManagerInterface $em, ProductsRepository $products): Response
     {
+//        dd($request->request->all());
+
         $customer = $request->getSession()->get(
             Security::LAST_USERNAME
         );
-        dump($customer);
+//        $amount = $request->request->get('amount');
+//        dd($amount);
         $request->getSession()->set('orderConfirm', true);
-        $repository = $em->getRepository(User::class);
-        $orderDetails = $repository->findOneBy(['email' => $customer]);
+        $goodsOrd = $request->getSession()->get('cart');
+        $total = $request->getSession()->get('total');
 
-        $this->session = new Session();
-        if (!isset($this->session)) {
-            $this->session->start();
-        }
-        $this->goodsOrd = $this->session->get('cart');
+        $user = $em->getRepository(User::class);
+        $orderDetails = $user->findOneBy(['email' => $customer]);
 
-        if (isset($this->goodsOrd)) {
+//        dd($customer, $user, $orderDetails);
+
+        if (isset($goodsOrd)) {
             foreach ($this->goodsOrd as $key => $cnt_id) {
                 if ($cnt_id > 0) {
-                    $this->gidsOrd[] = $repository2->findSelectProduct(intval($key));
+                    $this->gidsOrd[] = $products->findSelectProduct(intval($key));
                     $this->countsOrd[] = $cnt_id;
                 }
             }
         }
+//    dd($this->gidsOrd);
 
         return $this->render('order/order.html.twig', [
            // 'controller_name' => 'OrderController',
             'orderDetails' => $orderDetails,
+            'sale' => '10',
             'gidsOrd' => $this->gidsOrd,
-            'totalOrd' => $this->session->get('total'),
+            'totalOrd' => $total,
             'countsOrd' => $this->countsOrd,
         ]);
     }

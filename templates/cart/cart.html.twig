@@ -15,10 +15,9 @@
     </div>
     <div class="Section">
         <div class="wrap">
-            <form class="form Cart" action="#" method="post">
- 			{% set cnt = 0 %}
+            <form class="form Cart" name="cart_form" action="{{ path('app_cart_confirm') }}" method="post">
 			    {% for good in goods %}
-
+				
                 <div class="Cart-product">
                     <div class="Cart-block Cart-block_row">
                         <div class="Cart-block Cart-block_pict">
@@ -31,7 +30,6 @@
                         <div class="Cart-block Cart-block_price">
                             <div class="Cart-price">{{ good.product.price }}$
                             </div>
-
                         </div>
                     </div>
                     <div class="Cart-block Cart-block_row">
@@ -48,43 +46,42 @@
                         </div>
                         <div class="Cart-block Cart-block_amount">
                             <div class="Cart-amount">
-                                <div class="Amount">
-                                    <div class="Cart-block">
-                                        <a  class="btn btn_success btn_md" href="{{ path('decrease_to_cart',{id:good.product.id}) }}">-</a>
-                                    </div>
-                                    <input class="Amount-input form-input" name="amount" type="text" value="{{ good.quantity }}" />
-                                    <div class="Cart-block">
-                                        <a  class="btn btn_success btn_md" href="{{ path('increase_to_cart',{id:good.product.id}) }}">+</a>
-                                    </div>
+                                <div class="Amount Amount_product">
+                                    <button class="Amount-remove" type="button"></button>
+                                    {#                                    <a class="btn Amount-remove" href="{{ path('decrease_to_cart',{id:good.product.id}) }}">-</a>#}
+                                    <input class="Amount-input form-input" name="amount[{{ good.product.id }}]" type="text" value="{{ good.quantity }}" />
+                                    <button class="Amount-add" type="button"></button>
+                                    {#                                    <a class="btn Amount-add" href="{{ path('increase_to_cart',{id:good.product.id}) }}">+</a>#}
                                 </div>
                             </div>
                         </div>
-                    </div>
                         <div class="Cart-block Cart-block_delete">
                             <a class="Cart-delete" href="{{ path('app_cart_delete', {id: good.product.id}) }}"><img src="{{ asset('assets/img/icons/card/delete.svg') }}" alt="delete.svg"/></a>
                         </div>
-
                     </div>
-
-{#                     {% set cnt = good.product.price * good.quantity + cnt %}#}
-{#                      {{ app.session.set('total', cnt) }}#}
+                </div>
                 {% endfor %}
 
                 <div class="Cart-total">
                     <div class="Cart-block Cart-block_total">
                         <strong class="Cart-title">Итого:
-                        </strong><span class="Cart-price">{{ total }}{# {{ cnt }} #}$</span><span class="Cart-price_old">250.99$</span>
+                        </strong><span class="Cart-price">{{ app.session.get('total') }} $</span><span class="Cart-price_old">250.99$</span>
                     </div>
                     <div class="Cart-block">
-                        <a class="btn btn_success btn_md" href="{{ path('remove_to_cart') }}">Очистить</a>
+                        <a class="btn btn_danger btn_md" href="{{ path('remove_to_cart') }}">Очистить</a>
                     </div>
                     <div class="Cart-block">
                     <input  type="submit" class="btn btn_success btn_md" id="update" name="update" value="Пересчитать">
-                </div>
+                    </div>
+{#                    <div class="Cart-block">#}
+{#                    <input  type="submit" class="btn btn_success btn_md" id="conf" name="conf" value="Оформить">#}
+{#                    </div>#}
                     <div class="Cart-block">
                         <a class="btn btn_success btn_md" href="{{ path('app_catalog') }}">Продолжить покупки</a>
                     </div>
-                    <div class="Cart-block"><a class="btn btn_success btn_md" href="{{ path('app_order') }}">Оформить заказ</a>
+                    <div class="Cart-block">
+{#                        <button class="btn btn_primary" type="submit"><img class="btn-icon" src="{{ asset('assets/img/icons/card/cart_white.svg') }}" alt="cart_white.svg"/><span class="btn-content">Оформить заказ</span></button>#}
+                        <a class="btn btn_success btn_md" id="confirm" href="{{ path('app_cart_confirm') }}">Оформить заказ</a>
                     </div>
                 </div>
             </form>
@@ -92,3 +89,24 @@
     </div>
 </div>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        // const radios = document.querySelectorAll('input[name="pay"]');
+        const button = document.querySelector('[name="update"]');
+        const forms = document.querySelector('[name="cart_form"]');
+        const path = "/cart/update";
+        button.addEventListener('click', function() {
+            // for (let radio of radios) {
+            //     if (radio.checked) {
+            //         if (radio.value === "online") {
+            //             forms.action ="/payment";
+            //         } else {
+             forms.action = path;
+                //     }
+                // }
+            // }
+        });
+    </script>
+{% endblock %}
+

@@ -19,7 +19,7 @@ class CatalogController extends AbstractController
     public function show(EntityManagerInterface $entityManager, PaginatorInterface $paginator, CatalogService $catalog, Request $request): Response
     {
         $offset = 3;
-        $sale = '15%';
+        $sale = '10';
         $products = $entityManager->getRepository(Products::class)->findAll();
         if (!$products) {
             throw $this->createNotFoundException('No product found for id ');

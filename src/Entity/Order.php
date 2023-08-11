@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(name: '`order`')]
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 class Order
 {
@@ -31,7 +32,7 @@ class Order
     #[ORM\Column(length: 255)]
     private ?string $orderStatus = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ordersRef')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'ordersRef')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -85,12 +86,12 @@ class Order
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(\DateTime $createdAt): static
     {
         $this->createdAt = $createdAt;
 

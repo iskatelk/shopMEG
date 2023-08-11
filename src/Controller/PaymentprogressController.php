@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PaymentprogressController extends AbstractController
 {
     /**
-     * @Route("/paymentprogress", name="app_paymentprogress")
+     * @Route("/paymentprogress1", name="app_paymentprogress1")
      */
     public function index(EntityManagerInterface $em): Response
     {

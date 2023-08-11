@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Личный кабинет{% endblock %}
 {% block body %}
   <div class="Middle Middle_top">
     <div class="Middle-top">
@@ -25,8 +25,8 @@
                 <ul class="menu menu_vt">
                   <li class="menu-item_ACTIVE menu-item"><a class="menu-link" href="{{ path('app_account') }}">Личный кабинет</a></li>
                   <li class="menu-item"><a class="menu-link" href="{{ path('app_profile') }}">Профиль</a></li>
-                  <li class="menu-item"><a class="menu-link" href="{{ path('app_historyorder') }}">История заказов</a></li>
-                  <li class="menu-item"><a class="menu-link" href="{{ path('app_historyview') }}">История просмотра</a></li>
+                  <li class="menu-item"><a class="menu-link" href="{{ path('app_history_order') }}">История заказов</a></li>
+                  <li class="menu-item"><a class="menu-link" href="{{ path('app_history_view') }}">История просмотра</a></li>
                 </ul>
               </div>
             </div>
@@ -36,7 +36,7 @@
           <div class="Account">
             <div class="Account-group">
               <div class="Account-column">
-                <div class="Account-avatar"><img src="assets/img/content/home/card.jpg" alt="card.jpg"/>
+                <div class="Account-avatar"><img src="{{ asset('assets/img/content/home/card.jpg') }}" alt="card.jpg"/>
                 </div>
               </div>
               <div class="Account-column">
@@ -50,8 +50,8 @@
                   {% if orderDetails is not null %}
                   <div class="Order-personal">
                     <div class="row">
-                      <div class="row-block"><a class="Order-title" href="{{ path('app_oneorder') }}?order={{ orderDetails.orderNumber }}">Заказ&#32;<span class="Order-numberOrder">№{{ orderDetails.orderNumber }}</span>&#32;от&#32;<span class="Order-dateOrder">{{ orderDetails.createdAt|date('Y-m-d') }}</span></a>
-                        <div class="Account-editLink"><a href="{{ path('app_historyorder') }}">История заказов</a>
+                      <div class="row-block"><a class="Order-title" href="{{ path('app_oneorder', {id: orderDetails.id}) }}">Заказ&#32;<span class="Order-numberOrder">№{{ orderDetails.id }}</span>&#32;от&#32;<span class="Order-dateOrder">{{ orderDetails.createdAt|date('Y-m-d') }}</span></a>
+                        <div class="Account-editLink"><a href="{{ path('app_history_order') }}">История заказов</a>
                         </div>
                       </div>
                       <div class="row-block">
@@ -94,7 +94,7 @@
                   </h2>
                 </header>
                 <div class="Cards Cards_account">
-                  <div class="Card"><a class="Card-picture" href="#"><img src="assets/img/content/home/card.jpg" alt="card.jpg"/></a>
+                  <div class="Card"><a class="Card-picture" href="#"><img src="{{ asset('assets/img/content/home/card.jpg') }}" alt="card.jpg"/></a>
                     <div class="Card-content">
                       <strong class="Card-title"><a href="#">Corsair Carbide Series Arctic White Steel</a>
                       </strong>
@@ -103,14 +103,14 @@
                         </div>
                         <div class="Card-category">Games / xbox
                         </div>
-                        <div class="Card-hover"><a class="Card-btn" href="#"><img src="assets/img/icons/card/bookmark.svg" alt="bookmark.svg"/></a><a class="Card-btn" href="#"><img src="assets/img/icons/card/cart.svg" alt="cart.svg"/></a><a class="Card-btn" href="#"><img src="assets/img/icons/card/change.svg" alt="change.svg"/></a>
+                        <div class="Card-hover"><a class="Card-btn" href="#"><img src="{{ asset('assets/img/icons/card/bookmark.svg') }}" alt="bookmark.svg"/></a><a class="Card-btn" href="#"><img src="{{ asset('assets/img/icons/card/cart.svg') }}" alt="cart.svg"/></a><a class="Card-btn" href="#"><img src="{{ asset('assets/img/icons/card/change.svg') }}" alt="change.svg"/></a>
                         </div>
                       </div>
                     </div>
                     <div class="Card-sale">-60%
                     </div>
                   </div>
-                  <div class="Card hide_700"><a class="Card-picture" href="#"><img src="assets/img/content/home/card.jpg" alt="card.jpg"/></a>
+                  <div class="Card hide_700"><a class="Card-picture" href="#"><img src="{{ asset('assets/img/content/home/card.jpg') }}" alt="card.jpg"/></a>
                     <div class="Card-content">
                       <strong class="Card-title"><a href="#">Barand New Phone Smart Business</a>
                       </strong>
@@ -143,7 +143,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="Account-editLink Account-editLink_view"><a href="historyview.html">Перейти на полный список</a>
+                <div class="Account-editLink Account-editLink_view"><a href="{{ path('app_history_view') }}">Перейти на полный список</a>
                 </div>
               </div>
             </div>
