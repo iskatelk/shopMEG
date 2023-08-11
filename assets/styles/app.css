@@ -5,3 +5,10 @@
 body {
     background-color: white;
 }
+
+.alert-warning {
+    padding: 20px;
+    background-color: #f98561;
+    color: white;
+    margin-bottom: 15px;
+}

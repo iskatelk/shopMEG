@@ -47,7 +47,7 @@ class SecurityController extends AbstractController
      */
     public function register(
         EntityManagerInterface $em,
-        Request $request
+        Request $request,
         //        UserPasswordEncoderInterface $passwordEncoder,
         //        GuardAuthenticatorHandler $guard,
         //        LoginFormAuthenticator $authenticator
@@ -55,7 +55,6 @@ class SecurityController extends AbstractController
         if ($request->isMethod('POST')) {
             $user = new User();
             //            $user = $authenticator->getLastUsername();
-
             $user
                 ->setEmail($request->request->get('mail'))
                 ->setPhone($request->request->get('phone'))
@@ -70,7 +69,6 @@ class SecurityController extends AbstractController
 
             return $this->redirectToRoute('app_account');
         }
-
         return $this->render('security/register.html.twig');
     }
 }

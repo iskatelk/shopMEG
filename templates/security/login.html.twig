@@ -15,17 +15,24 @@
     </div>
     <div class="Section">
         <div class="wrap">
-            <form class="form Authorization" action="#" method="post">
+            <form class="form Authorization" action="{{ path('app_login') }}" method="post">
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 <div class="row">
                     <div class="row-block">
+                        {% if error %}
+                            <div class="form-group">
+                                <div class="alert alert-warning" role="alert">
+                                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                                </div>
+                            </div>
+                        {% endif %}
                         <div class="form-group">
                             <label class="form-label" for="phone">Email</label>
-                            <input class="form-input" id="inputEmail" name="email" type="email" placeholder="Ваш Email..."/>
+                            <input class="form-input auto-complete-off" id="inputEmail" name="email" type="email" value="{{ last_username }}" placeholder="Ваш Email..."/>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="password">Пароль</label>
-                            <input class="form-input" id="inputPassword" name="password" type="password" placeholder="Ваш пароль"/>
+                            <input class="form-input auto-complete-off" id="inputPassword" name="password" type="password" autocomplete="new-password" placeholder="Ваш пароль"/>
                         </div>
                         <div class="form-group">
                             <button class="btn btn_primary" type="submit">Войти</button>
