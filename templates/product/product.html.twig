@@ -174,7 +174,7 @@
                       <header class="Comment-header">
                         <div>
                           <strong class="Comment-title">{{ comment.name }}
-                          </strong><span class="Comment-date">{{ comment.createdAt | format_datetime(locale='ru') }} | 22:50 - 25 Декабря 2020</span>
+                          </strong><span class="Comment-date">{{ comment.createdAt|format_datetime(pattern='HH:mm - d MMMM Y', locale='ru') }}</span>
                         </div>
                       </header>
                       <div class="Comment-content">{{ comment.review }}
@@ -228,7 +228,7 @@
                       <header class="Comment-header">
                         <div>
                           <strong class="Comment-title">{{ question.author }}
-                          </strong><span class="Comment-date">{{ question.createdAt | format_datetime(locale='ru') }} | 22:50 - 25 Декабря 2020</span>
+                          </strong><span class="Comment-date">{{ question.createdAt|format_datetime(pattern='HH:mm - d MMMM Y', locale='ru') }}</span>
                         </div>
                       </header>
                       <div class="Comment-content">{{ question.content }}
