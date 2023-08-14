@@ -4,7 +4,6 @@
 /public/build
 
 README-2.md
-*.png
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
