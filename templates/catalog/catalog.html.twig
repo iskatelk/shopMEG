@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Каталог{% endblock %}
 {% block body %}
 <div class="Middle Middle_top">
     <div class="Middle-top">
@@ -70,6 +70,8 @@
             </div>
             <div class="Section-content">
                 <div class="Sort">
+                    <div class="Sort-title">({{ pagination|length }})
+                    </div>
                     <div class="Sort-title">Сортировать по:
                     </div>
                     <div class="Sort-variants"><a class="Sort-sortBy Sort-sortBy_dec" href="{{ path('app_catalog') }}">Популярности</a><a class="Sort-sortBy" href="{{ path('app_catalog') }}?q=1">Цене</a><a class="Sort-sortBy" href="#">Отзывам</a><a class="Sort-sortBy Sort-sortBy_inc" href="#">Новизне</a>
@@ -77,40 +79,40 @@
                 </div>
                 <div class="Cards">
                     {% for product in pagination %}
-                    <div class="Card"><a class="Card-picture" href="{{ path('product_show', {id: product.id}) }}"><img src="/assets/img/content/home/card.jpg" alt="card.jpg"/></a>
+                    <div class="Card"><a class="Card-picture" href="{{ path('product_show', {id: product.id}) }}"><img src="{{ asset('assets/img/content/home/card.jpg') }}" alt="card.jpg"/></a>
                         <div class="Card-content">
                             <strong class="Card-title"><a href="{{ path('product_show', {id: product.id}) }}">{{ product.name }}</a>
                             </strong>
                             <div class="Card-description">
-                                <div class="Card-cost"><span class="Card-priceOld">$115.00</span><span class="Card-price">${{ product.price }}</span>
+                                <div class="Card-cost"><span class="Card-priceOld">{% if sale|default %}{{ product.price * 100 // (100 - sale ) }}{% endif %}</span><span class="Card-price">${{ product.price }}</span>
                                 </div>
                                 <div class="Card-category">Games / xbox
                                 </div>
                                 <div class="Card-hover"><a class="Card-btn" href="{{ path('product_show', {id: product.id}) }}">
-                                        <img src="/assets/img/icons/card/bookmark.svg" alt="bookmark.svg"/></a>
+                                        <img src="{{ asset('assets/img/icons/card/bookmark.svg') }}" alt="bookmark.svg"/></a>
                                     <a class="Card-btn" href="{{ path('app_cart_add', {id: product.id}) }}">
-                                        <img src="/assets/img/icons/card/cart.svg" alt="cart.svg"/></a>
+                                        <img src="{{ asset('assets/img/icons/card/cart.svg') }}" alt="cart.svg"/></a>
                                     <a class="Card-btn" href="{{ path('app_compare', {id: product.id}) }}">
-                                        <img src="/assets/img/icons/card/change.svg" alt="change.svg"/></a>
+                                        <img src="{{ asset('assets/img/icons/card/change.svg') }}" alt="change.svg"/></a>
                                 </div>
                             </div>
                         </div>
-                        <div class="Card-sale">-60%
+                        <div class="Card-sale">{{ sale }} %
                         </div>
                     </div>
                     {% endfor %}
-
                 </div>
-
+                <div class="Pagination">
+                    <div class="Pagination-ins">
+                        {{ knp_pagination_render(pagination, null, {}, {
+                            'align': 'center',
+                            'size': 'large',
+                            'rounded': true,
+                        }) }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div style="align-self: center;">
-{{ knp_pagination_render(pagination, null, {}, {
-        'align': 'center',
-        'size': 'large',
-        'rounded': true,
-}) }}
 </div>
 {% endblock %}

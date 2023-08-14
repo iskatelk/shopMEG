@@ -15,35 +15,35 @@ use Symfony\Component\Security\Core\Security;
 class OneorderController extends AbstractController
 {
     /**
-     * @Route("/oneorder", name="app_oneorder")
+     * @Route("/oneorder/{id}", name="app_oneorder")
      */
-    public function index(Request $request, EntityManagerInterface $em): Response
+    public function index(int $id, Request $request, EntityManagerInterface $em): Response
     {
-        $orderNumber = $request->query->get('order');
-        var_dump($orderNumber);
-        $repository = $em->getRepository(Order::class);
-        $order = $repository->findOneBy(
-            ['orderNumber' => intval($orderNumber)]
-        );
-
+//        $orderNumber = $request->query->get('order');
+//        var_dump($orderNumber);
         $customer = $request->getSession()->get(
             Security::LAST_USERNAME
         );
-        $repository2 = $em->getRepository(User::class);
-        $orderCustomer = $repository2->findOneBy(
-            ['email' => $customer]
-        );
+        $userRepository = $em->getRepository(User::class);
+        $userDetails = $userRepository->findOneBy([
+            'email' => $customer,
+        ]);
 
-        $repository3 = $em->getRepository(OrderProducts::class);
-        $orderDetails = $repository3->findBy(
-            ['orderNumber' => intval($orderNumber)]
-        );
+        $orderRepository = $em->getRepository(Order::class);
+        $order = $orderRepository->findOneBy([
+            'user' => $userDetails,
+            'id' => $id,
+        ]);
 
-        return $this->render('oneorder/oneorder.html.twig', [
-           // 'controller_name' => 'OneorderController',
+        $orderProductsRepository = $em->getRepository(OrderProducts::class);
+        $orderDetails = $orderProductsRepository->findBy([
+            'orderRef' => $id,
+        ]);
+//        dump($id, $orderDetails, $order);
+        return $this->render('account/one_order.html.twig', [
            'order' => $order,
            'orderDetails' => $orderDetails,
-           'orderCustomer' => $orderCustomer,
+           'userDetails' => $userDetails,
         ]);
     }
 }

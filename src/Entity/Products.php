@@ -53,6 +53,10 @@ class Products
         $this->categories = new ArrayCollection();
         $this->questions = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->name.' - '.$this->price;
+    }
 
     public function getId(): ?int
     {

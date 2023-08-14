@@ -18,6 +18,8 @@ class CatalogController extends AbstractController
      */
     public function show(EntityManagerInterface $entityManager, PaginatorInterface $paginator, CatalogService $catalog, Request $request): Response
     {
+        $offset = 3;
+        $sale = '10';
         $products = $entityManager->getRepository(Products::class)->findAll();
         if (!$products) {
             throw $this->createNotFoundException('No product found for id ');
@@ -48,12 +50,13 @@ class CatalogController extends AbstractController
         $pagination = $paginator->paginate(
             $products,
             $request->query->getInt('page', 1),
-            6
+            $offset
         );
 
         return $this->render('catalog/catalog.html.twig', [
             'controller_name' => 'CatalogController',
             'pagination' => $pagination,
+            'sale' => $sale,
         ]);
     }
 }

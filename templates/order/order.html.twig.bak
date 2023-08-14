@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="Section-content">
-                <form class="form" name="order_form" action="{{ path('app_payment') }}" method="post">
+                <form class="form" name="order_form" action="" method="post">
                     <div class="Order-block Order-block_OPEN" id="step1">
                         <header class="Section-header Section-header_sm">
                             <h2 class="Section-title">Шаг 1. Параметры пользователя</h2>
@@ -45,7 +45,7 @@
                                 <div class="form-group">
                                     <label class="form-label" for="name">ФИО</label>
                                     <input class="form-input" id="name" name="name" type="text"
-                                            {% if orderDetails|default %}
+                                            {% if orderDetails is not null %}
                                            value="{{ orderDetails.customer }}"
                                            {% endif %}
                                            placeholder="Ваше ФИО"/>
@@ -70,11 +70,11 @@
                             <div class="row-block">
                                 <div class="form-group">
                                     <label class="form-label" for="password">Пароль</label>
-                                    <input class="form-input auto-complete-off" id="password" name="password" type="password" placeholder="Тут можно изменить пароль"/>
+                                    <input class="form-input" id="password" name="password" type="password" placeholder="Тут можно изменить пароль"/>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="passwordReply">Подтверждение пароля</label>
-                                    <input class="form-input auto-complete-off" id="passwordReply" name="passwordReply" type="password" placeholder="Введите пароль повторно"/>
+                                    <input class="form-input" id="passwordReply" name="passwordReply" type="password" placeholder="Введите пароль повторно"/>
                                 </div>
                                 <div class="form-group"><a class="btn btn_muted Order-btnReg" href="{{ path('app_login') }}">Я уже зарегистрирован</a></div>
                             </div>
@@ -102,7 +102,7 @@
                             <label class="form-label" for="city">Город
                             </label>
                             <input class="form-input" id="city" name="city" type="text"
-                                    {% if orderDetails|default %}
+                                    {% if orderDetails is not null %}
                                         value="{{ orderDetails.city }}"
                                     {% endif %}
                             />
@@ -112,7 +112,7 @@
                             </label>
                             <textarea class="form-textarea" name="address" id="address"
 
-                                >{% if orderDetails|default %}{{ orderDetails.address }} {% endif %}</textarea>
+                                >{% if orderDetails is not null %}{{ orderDetails.address }} {% endif %}</textarea>
 
                         </div>
                         <div class="Order-footer">
@@ -138,7 +138,7 @@
                         </div>
                         <div class="Order-footer">
                             <a class="btn btn_success Order-next" href="#step2">Назад</a>
-                            <a class="btn btn_success Order-next" href="#step4" id="btn-check">Дальше</a>
+                            <a class="btn btn_success Order-next" href="#step4"  name="btn-check">Дальше</a>
                         </div>
                     </div>
                     <div class="Order-block" id="step4">
@@ -204,10 +204,10 @@
                                 {% if countsOrd [i] > 0 %}
                                 <div class="Cart-product">
                                     <div class="Cart-block Cart-block_row">
-                                        <div class="Cart-block Cart-block_pict"><a class="Cart-pict" href="#"><img class="Cart-img" src="{{ asset('assets/img/content/home/card.jpg') }}" alt="card.jpg"/></a>
+                                        <div class="Cart-block Cart-block_pict"><a class="Cart-pict" href="#"><img class="Cart-img" src="assets/img/content/home/card.jpg" alt="card.jpg"/></a>
                                         </div>
                                         <div class="Cart-block Cart-block_info"><a class="Cart-title" href="#">{{ gidOrd.0.name }}</a>
-                                            <div class="Cart-desc">{{ gidOrd.0.name }}
+                                            <div class="Cart-desc">Это супер ноутбук, 3 гб. 4 ядра {{ gidOrd.0.id }}
                                             </div>
                                         </div>
                                         <div class="Cart-block Cart-block_price">
@@ -233,7 +233,7 @@
                                 <div class="Cart-total">
                                     <div class="Cart-block Cart-block_total">
                                         <strong class="Cart-title">Итого:
-                                        </strong><span class="Cart-price">{{ totalOrd }}&nbsp;$</span><span class="Cart-price_old">{{ totalOrd * 100 // (100 - sale) }}&nbsp;$</span>
+                                        </strong><span class="Cart-price">{{ totalOrd }}$</span><span class="Cart-price_old">250.99$</span>
                                     </div>
                                     <div class="Cart-block">
                                         <a class="btn btn_success Order-next" href="#step3">Назад</a>
@@ -250,4 +250,23 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        let radios = document.querySelectorAll('input[name="pay"]');
+        let button = document.querySelector('[name="btn"]');
+        let forms = document.querySelector('[name="order_form"]');
+        button.addEventListener('click', function() {
+            for (let radio of radios) {
+                if (radio.checked) {
+                    if (radio.value === "online") {
+                        forms.action ="{{ path('app_payment') }}";
+                    } else {
+                        forms.action ="{{ path('app_paymentsomeone') }}";
+                    }
+                }
+            }
+        });
+    </script>
 {% endblock %}

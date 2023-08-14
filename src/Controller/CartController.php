@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Service\CartService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
@@ -18,21 +20,31 @@ class CartController extends AbstractController
     /**
      * @Route("/cart", name = "app_cart")
      */
-    public function index(CartService $cart): \Symfony\Component\HttpFoundation\Response
+    public function index(CartService $cart, Request $request): Response
     {
-        // dd($cart->getFull());
+        $cart->setTotal();
+        $goods = $cart->getFull();
+        $total = $request->get('total');
+//        dd($total);
         return $this->render('cart/cart.html.twig', [
-            // 'goods' => $cart->getFull(),
-            'goods' => $cart->getFull(),
+            'goods' => $goods,
+            'total' => $total,
         ]);
     }
 
     /**
      * @Route("/cart/add/{id}", name="app_cart_add")
      */
-    public function add(CartService $cart, $id): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function add(Request $request, CartService $cart, $id): RedirectResponse
     {
-        $cart->add($id);
+        if ($request->isMethod('POST')
+        && $amount = $request->request->get('amount')
+        ) {
+//        $amount = $request->query->get('amount');
+        $cart->add($id, $amount);
+        } else {
+            $cart->add($id, 1);
+        }
 
         return $this->redirectToRoute('app_cart');
     }
@@ -40,7 +52,7 @@ class CartController extends AbstractController
     /**
      * @Route("/cart/remove", name="remove_to_cart")
      */
-    public function remove(CartService $cart): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function remove(CartService $cart): RedirectResponse
     {
         $cart->remove();
 
@@ -50,9 +62,39 @@ class CartController extends AbstractController
     /**
      * @Route("/cart/delete/{id}", name="app_cart_delete")
      */
-    public function delete(CartService $cart, $id): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function delete(CartService $cart, $id): RedirectResponse
     {
         $cart->delete($id);
+
+        return $this->redirectToRoute('app_cart');
+    }
+
+    #[Route('/cart/confirm', name: 'app_cart_confirm')]
+    public function cartConfirm(CartService $cart, Request $request): RedirectResponse
+    {
+//                dd($request->request->all());
+        if ($request->isMethod('POST')
+            && $amounts = $request->request->get('amount')
+        ) {
+            foreach ($amounts as $key => $amount) {
+                $cart->add($key, $amount);
+            }
+        }
+
+        return $this->redirectToRoute('app_order');
+    }
+
+    #[Route('/cart/update', name: 'app_cart_update')]
+    public function cartUpdate(CartService $cart, Request $request): RedirectResponse
+    {
+//        dd($request->request->all());
+        if ($request->isMethod('POST')
+            && $amounts = $request->request->get('amount')
+        ) {
+            foreach ($amounts as $key => $amount) {
+                $cart->add($key, $amount);
+            }
+        }
 
         return $this->redirectToRoute('app_cart');
     }
@@ -60,7 +102,7 @@ class CartController extends AbstractController
     /**
      * @Route("/cart/decrease/{id}", name="decrease_to_cart")
      */
-    public function decrease(CartService $cart, $id): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function decrease(CartService $cart, $id): RedirectResponse
     {
         $cart->decrease($id);
 
@@ -70,7 +112,7 @@ class CartController extends AbstractController
     /**
      * @Route("/cart/increase/{id}", name="increase_to_cart")
      */
-    public function increase(CartService $cart, $id): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function increase(CartService $cart, $id): RedirectResponse
     {
         $cart->increase($id);
 
